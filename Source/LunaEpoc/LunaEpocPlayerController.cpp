@@ -40,7 +40,7 @@ void ALunaEpocPlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 
 	// Set up action bindings
-	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
+	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent))
 	{
 		// Setup mouse input events
 		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &ALunaEpocPlayerController::OnInputStarted);
@@ -53,6 +53,13 @@ void ALunaEpocPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Triggered, this, &ALunaEpocPlayerController::OnTouchTriggered);
 		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Completed, this, &ALunaEpocPlayerController::OnTouchReleased);
 		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Canceled, this, &ALunaEpocPlayerController::OnTouchReleased);
+
+		//Movement
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ALunaEpocPlayerController::Move);
+
+		//Looking
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ALunaEpocPlayerController::Look);
+
 	}
 	else
 	{
@@ -122,4 +129,38 @@ void ALunaEpocPlayerController::OnTouchReleased()
 {
 	bIsTouch = false;
 	OnSetDestinationReleased();
+}
+
+void ALunaEpocPlayerController::Move(const FInputActionValue& Value)
+{
+	const FVector2D MovementVector = Value.Get<FVector2D>();
+
+	if (APawn* ControlledPawn = GetPawn())
+	{
+		//Craig - Uses controller rotation, feels a bit weird for our game but here for ref.
+		//const FRotator Rotation = GetControlRotation();
+		//const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
+
+		//const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+		//ControlledPawn->AddMovementInput(ForwardDirection, MovementVector.Y);
+		//const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		//ControlledPawn->AddMovementInput(RightDirection, MovementVector.X);
+
+		const FVector Forward = ControlledPawn->GetActorForwardVector();
+		ControlledPawn->AddMovementInput(Forward, MovementVector.Y);
+
+		const FVector Right = ControlledPawn->GetActorRightVector();
+		ControlledPawn->AddMovementInput(Right, MovementVector.X);
+	}
+}
+
+void ALunaEpocPlayerController::Look(const FInputActionValue& Value)
+{
+	FVector2D LookAxisValue = Value.Get<FVector2D>();
+
+	if (APawn* ControlledPawn = GetPawn())
+	{
+		ControlledPawn->AddControllerYawInput(LookAxisValue.X);
+		ControlledPawn->AddControllerPitchInput(LookAxisValue.Y);
+	}
 }

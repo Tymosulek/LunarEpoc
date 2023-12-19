@@ -18,7 +18,7 @@ ALunaEpocCharacter::ALunaEpocCharacter()
 
 	// Don't rotate character to camera direction
 	bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = false;
+	//bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 
 	// Configure character movement
@@ -47,5 +47,5 @@ ALunaEpocCharacter::ALunaEpocCharacter()
 
 void ALunaEpocCharacter::Tick(float DeltaSeconds)
 {
-    Super::Tick(DeltaSeconds);
+	Super::Tick(DeltaSeconds);
 }

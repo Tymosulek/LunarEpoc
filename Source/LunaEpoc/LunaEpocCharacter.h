@@ -11,10 +11,13 @@ class ALunaEpocCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-public:
+public: /*Designer Facing Tunable*/
+
+
+
+public: /*Functions*/
 	ALunaEpocCharacter();
 
-	// Called every frame.
 	virtual void Tick(float DeltaSeconds) override;
 
 	/** Returns TopDownCameraComponent subobject **/
@@ -22,7 +25,12 @@ public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
-private:
+public: /*Properties*/
+
+private: /*functions*/
+
+private: /*properties*/
+
 	/** Top down camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* TopDownCameraComponent;
