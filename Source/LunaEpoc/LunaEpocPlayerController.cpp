@@ -137,19 +137,16 @@ void ALunaEpocPlayerController::Move(const FInputActionValue& Value)
 
 	if (APawn* ControlledPawn = GetPawn())
 	{
-		//Craig - Uses controller rotation, feels a bit weird for our game but here for ref.
-		//const FRotator Rotation = GetControlRotation();
-		//const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
+		// Get the forward vector of the world (not the actor)
+		const FVector Forward = FVector::ForwardVector;
 
-		//const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-		//ControlledPawn->AddMovementInput(ForwardDirection, MovementVector.Y);
-		//const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-		//ControlledPawn->AddMovementInput(RightDirection, MovementVector.X);
-
-		const FVector Forward = ControlledPawn->GetActorForwardVector();
+		// Move the character forward based on the Y component of MovementVector
 		ControlledPawn->AddMovementInput(Forward, MovementVector.Y);
 
-		const FVector Right = ControlledPawn->GetActorRightVector();
+		// Get the right vector of the world (not the actor)
+		const FVector Right = FVector::RightVector;
+
+		// Move the character right based on the X component of MovementVector
 		ControlledPawn->AddMovementInput(Right, MovementVector.X);
 	}
 }
