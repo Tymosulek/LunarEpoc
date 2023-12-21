@@ -56,10 +56,6 @@ void ALunaEpocPlayerController::SetupInputComponent()
 
 		//Movement
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ALunaEpocPlayerController::Move);
-
-		//Looking
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ALunaEpocPlayerController::Look);
-
 	}
 	else
 	{
@@ -135,29 +131,8 @@ void ALunaEpocPlayerController::Move(const FInputActionValue& Value)
 {
 	const FVector2D MovementVector = Value.Get<FVector2D>();
 
-	if (APawn* ControlledPawn = GetPawn())
+	if (ALunaEpocCharacter* LunaCharacter = Cast<ALunaEpocCharacter>(GetPawn()))
 	{
-		// Get the forward vector of the world (not the actor)
-		const FVector Forward = FVector::ForwardVector;
-
-		// Move the character forward based on the Y component of MovementVector
-		ControlledPawn->AddMovementInput(Forward, MovementVector.Y);
-
-		// Get the right vector of the world (not the actor)
-		const FVector Right = FVector::RightVector;
-
-		// Move the character right based on the X component of MovementVector
-		ControlledPawn->AddMovementInput(Right, MovementVector.X);
-	}
-}
-
-void ALunaEpocPlayerController::Look(const FInputActionValue& Value)
-{
-	FVector2D LookAxisValue = Value.Get<FVector2D>();
-
-	if (APawn* ControlledPawn = GetPawn())
-	{
-		ControlledPawn->AddControllerYawInput(LookAxisValue.X);
-		ControlledPawn->AddControllerPitchInput(LookAxisValue.Y);
+		LunaCharacter->Move(MovementVector);
 	}
 }

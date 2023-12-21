@@ -13,7 +13,8 @@ class ALunaEpocCharacter : public ACharacter
 
 public: /*Designer Facing Tunable*/
 
-
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	float RotationSpeed = 500.f;
 
 public: /*Functions*/
 	ALunaEpocCharacter();
@@ -25,9 +26,14 @@ public: /*Functions*/
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
+	void Move(const FVector2D& InputVector);
+
+
 public: /*Properties*/
 
 private: /*functions*/
+
+	void RotateToMouse(float DeltaSeconds);
 
 private: /*properties*/
 

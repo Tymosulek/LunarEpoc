@@ -10,19 +10,18 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Materials/Material.h"
 #include "Engine/World.h"
+#include "../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
 
 ALunaEpocCharacter::ALunaEpocCharacter()
 {
 	// Set size for player capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
-	// Don't rotate character to camera direction
+	// Don't rotate character pitch and roll, yaw is fine.
 	bUseControllerRotationPitch = false;
-	//bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 
 	// Configure character movement
-	GetCharacterMovement()->bOrientRotationToMovement = true; // Rotate character to moving direction
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 640.f, 0.f);
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
@@ -48,4 +47,43 @@ ALunaEpocCharacter::ALunaEpocCharacter()
 void ALunaEpocCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+
+	//Make character rotate to face mouse position.
+	RotateToMouse(DeltaSeconds);
+}
+
+void ALunaEpocCharacter::Move(const FVector2D& InputVector)
+{
+	// Move the character forward based on the Y component of MovementVector
+	AddMovementInput(FVector::ForwardVector, InputVector.Y);
+
+	// Move the character right based on the X component of MovementVector
+	AddMovementInput(FVector::RightVector, InputVector.X);
+}
+
+void ALunaEpocCharacter::RotateToMouse(float DeltaSeconds)
+{
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	if (!PlayerController)
+	{
+		return;
+	}
+
+
+	FHitResult Hit;
+	bool bSuccess = PlayerController->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false, Hit);
+	if (!bSuccess)
+	{
+		return;
+	}
+
+	FVector MouseLocation(Hit.Location.X, Hit.Location.Y, GetActorLocation().Z);
+
+	FRotator CurrentRotation = GetActorRotation();
+	FRotator TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), MouseLocation);
+
+	// Interpolate rotation with shortest path across -180/180 boundary
+	FRotator LerpedRotation = FMath::RInterpTo(CurrentRotation, TargetRotation, DeltaSeconds, RotationSpeed);
+
+	SetActorRotation(LerpedRotation);
 }
