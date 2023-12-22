@@ -56,6 +56,9 @@ void ALunaEpocPlayerController::SetupInputComponent()
 
 		//Movement
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ALunaEpocPlayerController::Move);
+
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ALunaEpocPlayerController::Sprint);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ALunaEpocPlayerController::Sprint);
 	}
 	else
 	{
@@ -134,5 +137,14 @@ void ALunaEpocPlayerController::Move(const FInputActionValue& Value)
 	if (ALunaEpocCharacter* LunaCharacter = Cast<ALunaEpocCharacter>(GetPawn()))
 	{
 		LunaCharacter->Move(MovementVector);
+	}
+}
+
+void ALunaEpocPlayerController::Sprint(const FInputActionValue& Value)
+{
+	const bool bShouldSprint = Value.Get<bool>();
+	if (ALunaEpocCharacter* LunaCharacter = Cast<ALunaEpocCharacter>(GetPawn()))
+	{
+		LunaCharacter->SetSprint(bShouldSprint);
 	}
 }

@@ -44,12 +44,25 @@ ALunaEpocCharacter::ALunaEpocCharacter()
 	PrimaryActorTick.bStartWithTickEnabled = true;
 }
 
+void ALunaEpocCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	GetCharacterMovement()->MaxWalkSpeed = MaxWalkSpeed;
+	bShouldSprint = false;
+	CurrentSpeed = MaxWalkSpeed;
+}
+
 void ALunaEpocCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
 	//Make character rotate to face mouse position.
 	RotateToMouse(DeltaSeconds);
+
+	//Gradually change the speed of character when sprinting/walking.
+	const float TargetSpeed = bShouldSprint ? MaxSprintSpeed : MaxWalkSpeed;
+	InterpolateSpeed(TargetSpeed, DeltaSeconds);
 }
 
 void ALunaEpocCharacter::Move(const FVector2D& InputVector)
@@ -59,6 +72,11 @@ void ALunaEpocCharacter::Move(const FVector2D& InputVector)
 
 	// Move the character right based on the X component of MovementVector
 	AddMovementInput(FVector::RightVector, InputVector.X);
+}
+
+void ALunaEpocCharacter::SetSprint(const bool bNewSprint)
+{
+	bShouldSprint = bNewSprint;
 }
 
 void ALunaEpocCharacter::RotateToMouse(float DeltaSeconds)
@@ -86,4 +104,10 @@ void ALunaEpocCharacter::RotateToMouse(float DeltaSeconds)
 	FRotator LerpedRotation = FMath::RInterpTo(CurrentRotation, TargetRotation, DeltaSeconds, RotationSpeed);
 
 	SetActorRotation(LerpedRotation);
+}
+
+void ALunaEpocCharacter::InterpolateSpeed(float TargetSpeed, float DeltaTime)
+{
+	CurrentSpeed = FMath::FInterpTo(CurrentSpeed, TargetSpeed, DeltaTime, InterpolationSpeed);
+	GetCharacterMovement()->MaxWalkSpeed = CurrentSpeed;
 }
