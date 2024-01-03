@@ -58,7 +58,7 @@ void ALunaEpocCharacter::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	//Make character rotate to face mouse position.
-	RotateToMouse(DeltaSeconds);
+	//RotateToMouse(DeltaSeconds);
 
 	//Gradually change the speed of character when sprinting/walking.
 	const float TargetSpeed = bShouldSprint ? MaxSprintSpeed : MaxWalkSpeed;
