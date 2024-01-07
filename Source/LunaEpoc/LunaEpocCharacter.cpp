@@ -100,6 +100,9 @@ void ALunaEpocCharacter::RotateToMouse(float DeltaSeconds)
 	FRotator CurrentRotation = GetActorRotation();
 	FRotator TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), MouseLocation);
 
+	// Adjust the target rotation to match the character's forward vector
+	TargetRotation.Yaw += 270.0f; 
+
 	// Interpolate rotation with shortest path across -180/180 boundary
 	FRotator LerpedRotation = FMath::RInterpTo(CurrentRotation, TargetRotation, DeltaSeconds, RotationSpeed);
 
