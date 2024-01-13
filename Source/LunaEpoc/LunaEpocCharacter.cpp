@@ -61,7 +61,8 @@ void ALunaEpocCharacter::Tick(float DeltaSeconds)
 	RotateToMouse(DeltaSeconds);
 
 	//Gradually change the speed of character when sprinting/walking.
-	const float TargetSpeed = bShouldSprint ? MaxSprintSpeed : MaxWalkSpeed;
+	float TargetSpeed = bShouldSprint ? MaxSprintSpeed : MaxWalkSpeed;
+	TargetSpeed *= SpeedModifier();
 	InterpolateSpeed(TargetSpeed, DeltaSeconds);
 }
 
@@ -77,6 +78,37 @@ void ALunaEpocCharacter::Move(const FVector2D& InputVector)
 void ALunaEpocCharacter::SetSprint(const bool bNewSprint)
 {
 	bShouldSprint = bNewSprint;
+}
+
+float ALunaEpocCharacter::SpeedModifier() const
+{
+	// Get the forward vector of the player's mesh or capsule component
+	FVector PlayerForward = GetActorForwardVector();
+
+	// Last input vector to show which direction character is moving.
+	FVector MovementInput = GetLastMovementInputVector();
+
+	// Normalize vectors to ensure accurate dot product results
+	PlayerForward.Normalize();
+	MovementInput.Normalize();
+
+	// Calculate the dot product
+	const float DotProduct = FVector::DotProduct(PlayerForward, MovementInput);
+
+	// Check if the dot product is greater than the threshold
+	const bool bSameDirection = DotProduct > StrafeSpeedThreshold;
+
+	// Now, bSameDirection will be true if the player is moving in the same direction as they are facing
+	if (bSameDirection)
+	{
+		// Player is moving in the same direction as facing
+		return 1;
+	}
+	else
+	{
+		// Player is not moving in the same direction as facing
+		return 0.5;
+	}
 }
 
 void ALunaEpocCharacter::RotateToMouse(float DeltaSeconds)
@@ -101,7 +133,7 @@ void ALunaEpocCharacter::RotateToMouse(float DeltaSeconds)
 	FRotator TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), MouseLocation);
 
 	// Adjust the target rotation to match the character's forward vector
-	TargetRotation.Yaw += 270.0f; 
+	//TargetRotation.Yaw += 270.0f; 
 
 	// Interpolate rotation with shortest path across -180/180 boundary
 	FRotator LerpedRotation = FMath::RInterpTo(CurrentRotation, TargetRotation, DeltaSeconds, RotationSpeed);
