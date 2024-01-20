@@ -25,13 +25,6 @@ public: /*Designer Facing Tunable*/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
 	float InterpolationSpeed = 100.f;
 
-	//Multiplied to the current speed if strafing / moving backward.
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
-	float StrafeSpeedModifier = 0.2f;
-
-	//How much of input direction should match the character facing direction to allow max speed or cause lower strafing speed.
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
-	float StrafeSpeedThreshold = 0.6f;
 
 public: /*Functions*/
 	ALunaEpocCharacter();
