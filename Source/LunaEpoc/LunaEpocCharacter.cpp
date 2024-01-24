@@ -17,9 +17,9 @@ ALunaEpocCharacter::ALunaEpocCharacter()
 	// Set size for player capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
-	// Don't rotate character pitch and roll, yaw is fine.
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
+	bUseControllerRotationYaw = false;
 
 	// Configure character movement
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 640.f, 0.f);
