@@ -1,6 +1,9 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "LunaEpocCharacter.h"
+
+#include "LunaEpocAttributeSet.h"
+
 #include "UObject/ConstructorHelpers.h"
 #include "Camera/CameraComponent.h"
 #include "Components/DecalComponent.h"
@@ -10,7 +13,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Materials/Material.h"
 #include "Engine/World.h"
-#include "../../../../../../../Source/Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "AbilitySystemComponent.h"
 
 ALunaEpocCharacter::ALunaEpocCharacter()
 {
@@ -42,6 +46,14 @@ ALunaEpocCharacter::ALunaEpocCharacter()
 	// Activate ticking in order to update the cursor every frame.
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
+
+	//Ability System Component Creation
+	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+
+	//Attribute Set Creation
+	Attributes = CreateDefaultSubobject<ULunaEpocAttributeSet>(TEXT("AttributeSet"));
 }
 
 void ALunaEpocCharacter::BeginPlay()
@@ -64,6 +76,62 @@ void ALunaEpocCharacter::Tick(float DeltaSeconds)
 	float TargetSpeed = bShouldSprint ? MaxSprintSpeed : MaxWalkSpeed;
 	TargetSpeed *= SpeedModifier();
 	InterpolateSpeed(TargetSpeed, DeltaSeconds);
+}
+
+void ALunaEpocCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	}
+
+	InitializeAttributes();
+	GiveDefaultAbilities();
+}
+
+void ALunaEpocCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	}
+
+	InitializeAttributes();
+}
+
+void ALunaEpocCharacter::InitializeAttributes()
+{
+	if (AbilitySystemComponent && DefaultAttributeEffect)
+	{
+		FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+		EffectContext.AddSourceObject(this);
+		FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributeEffect, 1, EffectContext);
+
+		if (SpecHandle.IsValid())
+		{
+			FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+		}
+	}
+}
+
+void ALunaEpocCharacter::GiveDefaultAbilities()
+{
+	if (HasAuthority() && AbilitySystemComponent)
+	{
+		for (auto& StartupAbility : DefaultAbilities)
+		{
+			AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(StartupAbility.GetDefaultObject(), 1, 0));
+		}
+	}
+}
+
+UAbilitySystemComponent* ALunaEpocCharacter::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
 }
 
 void ALunaEpocCharacter::Move(const FVector2D& InputVector)
