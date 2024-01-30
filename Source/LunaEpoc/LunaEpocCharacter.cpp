@@ -15,6 +15,8 @@
 #include "Engine/World.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine/StaticMeshActor.h"
 
 ALunaEpocCharacter::ALunaEpocCharacter()
 {
@@ -187,23 +189,29 @@ void ALunaEpocCharacter::RotateToMouse(float DeltaSeconds)
 		return;
 	}
 
+	FHitResult HitResult;
+	FVector MouseWorldLocation;
 
-	FHitResult Hit;
-	bool bSuccess = PlayerController->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false, Hit);
-	if (!bSuccess)
+	// Ignore the character itself
+	FCollisionQueryParams CollisionParams;
+	CollisionParams.AddIgnoredActor(this);
+
+	// Get the hit result under the cursor
+	if (!PlayerController->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false, HitResult))
 	{
 		return;
 	}
 
-	FVector MouseLocation(Hit.Location.X, Hit.Location.Y, GetActorLocation().Z);
+	// Extract the hit location
+	MouseWorldLocation = HitResult.Location;
+
+	// Keep the same Z-coordinate as the character
+	MouseWorldLocation.Z = GetActorLocation().Z;
 
 	FRotator CurrentRotation = GetActorRotation();
-	FRotator TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), MouseLocation);
+	FRotator TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), MouseWorldLocation);
 
-	// Adjust the target rotation to match the character's forward vector
-	//TargetRotation.Yaw += 270.0f; 
-
-	// Interpolate rotation with shortest path across -180/180 boundary
+	// Interpolate rotation with the shortest path across -180/180 boundary
 	FRotator LerpedRotation = FMath::RInterpTo(CurrentRotation, TargetRotation, DeltaSeconds, RotationSpeed);
 
 	SetActorRotation(LerpedRotation);
