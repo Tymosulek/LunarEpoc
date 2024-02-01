@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
 #include "AbilitySystemComponent.h"
-#include "LunaEpocAttributeSet.generated.h"
+#include "LunaAttributeSet.generated.h"
 
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
 	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
@@ -15,19 +15,19 @@
 
 
 UCLASS()
-class LUNAEPOC_API ULunaEpocAttributeSet : public UAttributeSet
+class LUNAEPOC_API ULunaAttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
 
 public:
-	ULunaEpocAttributeSet();
+	ULunaAttributeSet();
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	// Health
 	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
 	FGameplayAttributeData Health;
-	ATTRIBUTE_ACCESSORS(ULunaEpocAttributeSet, Health);
+	ATTRIBUTE_ACCESSORS(ULunaAttributeSet, Health);
 
 	UFUNCTION()
 	virtual void OnRep_Health(const FGameplayAttributeData& OldHealth);
@@ -37,7 +37,7 @@ public:
 	//Stamina
 	UPROPERTY(BlueprintReadOnly, Category = "Attributes")
 	FGameplayAttributeData Stamina;
-	ATTRIBUTE_ACCESSORS(ULunaEpocAttributeSet, Stamina);
+	ATTRIBUTE_ACCESSORS(ULunaAttributeSet, Stamina);
 
 	UFUNCTION()
 	virtual void OnRep_Stamina(const FGameplayAttributeData& OldStamina);

@@ -7,14 +7,13 @@
 //Engine
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "GameplayTagContainer.h"
 #include "GameplayEffectTypes.h"
 #include "AbilitySystemInterface.h"
 
-#include "LunaEpocCharacter.generated.h"
+#include "LunaCharacter.generated.h"
 
 UCLASS(Blueprintable)
-class ALunaEpocCharacter : public ACharacter, public IAbilitySystemInterface
+class ALunaCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -42,11 +41,11 @@ public: /*Designer Facing Tunable*/
 	TSubclassOf<class UGameplayEffect> DefaultAttributeEffect;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = Abilities)
-	TArray<TSubclassOf<class UGameplayAbility>> DefaultAbilities;
+	TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
 
 
 public: /*Functions*/
-	ALunaEpocCharacter();
+	ALunaCharacter();
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
@@ -60,9 +59,9 @@ public: /*Functions*/
 	void SetSprint(const bool bNewSprint);
 	float SpeedModifier() const;
 
-	/** Returns TopDownCameraComponent subobject **/
+	/** Returns TopDownCameraComponent subject **/
 	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
-	/** Returns CameraBoom subobject **/
+	/** Returns CameraBoom subject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns our Ability System Component. */
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
@@ -79,17 +78,17 @@ protected: /*properties*/
 
 	/** Top down camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* TopDownCameraComponent;
+	UCameraComponent* TopDownCameraComponent;
 
 	/** Camera boom positioning the camera above the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* CameraBoom;
+	USpringArmComponent* CameraBoom;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Abilities", meta = (AllowPrivateAccess = "true"))
 	UAbilitySystemComponent* AbilitySystemComponent;
 
 	UPROPERTY()
-	class ULunaEpocAttributeSet* Attributes;
+	class ULunaAttributeSet* Attributes;
 
 	bool bShouldSprint;// = false;
 	float CurrentSpeed;// = MaxWalkSpeed;

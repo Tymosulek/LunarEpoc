@@ -4,7 +4,7 @@ using UnrealBuildTool;
 
 public class LunaEpoc : ModuleRules
 {
-	public LunaEpoc(ReadOnlyTargetRules Target) : base(Target)
+	public LunaEpoc(ReadOnlyTargetRules target) : base(target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 

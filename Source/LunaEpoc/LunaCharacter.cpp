@@ -1,24 +1,21 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "LunaEpocCharacter.h"
+#include "LunaCharacter.h"
 
-#include "LunaEpocAttributeSet.h"
+#include "LunaAttributeSet.h"
 
-#include "UObject/ConstructorHelpers.h"
+#include "AbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
-#include "Components/DecalComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Engine/World.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Materials/Material.h"
-#include "Engine/World.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "AbilitySystemComponent.h"
-#include "Kismet/GameplayStatics.h"
-#include "Engine/StaticMeshActor.h"
+#include "Materials/Material.h"
+#include "UObject/ConstructorHelpers.h"
 
-ALunaEpocCharacter::ALunaEpocCharacter()
+ALunaCharacter::ALunaCharacter()
 {
 	// Set size for player capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
@@ -55,10 +52,10 @@ ALunaEpocCharacter::ALunaEpocCharacter()
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 
 	//Attribute Set Creation
-	Attributes = CreateDefaultSubobject<ULunaEpocAttributeSet>(TEXT("AttributeSet"));
+	Attributes = CreateDefaultSubobject<ULunaAttributeSet>(TEXT("AttributeSet"));
 }
 
-void ALunaEpocCharacter::BeginPlay()
+void ALunaCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -67,7 +64,7 @@ void ALunaEpocCharacter::BeginPlay()
 	CurrentSpeed = MaxWalkSpeed;
 }
 
-void ALunaEpocCharacter::Tick(float DeltaSeconds)
+void ALunaCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
@@ -80,7 +77,7 @@ void ALunaEpocCharacter::Tick(float DeltaSeconds)
 	InterpolateSpeed(TargetSpeed, DeltaSeconds);
 }
 
-void ALunaEpocCharacter::PossessedBy(AController* NewController)
+void ALunaCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
@@ -93,7 +90,7 @@ void ALunaEpocCharacter::PossessedBy(AController* NewController)
 	GiveDefaultAbilities();
 }
 
-void ALunaEpocCharacter::OnRep_PlayerState()
+void ALunaCharacter::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
 
@@ -105,22 +102,22 @@ void ALunaEpocCharacter::OnRep_PlayerState()
 	InitializeAttributes();
 }
 
-void ALunaEpocCharacter::InitializeAttributes()
+void ALunaCharacter::InitializeAttributes()
 {
 	if (AbilitySystemComponent && DefaultAttributeEffect)
 	{
 		FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
 		EffectContext.AddSourceObject(this);
-		FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributeEffect, 1, EffectContext);
 
-		if (SpecHandle.IsValid())
+		if (const FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(
+			DefaultAttributeEffect, 1, EffectContext); SpecHandle.IsValid())
 		{
-			FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+			AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 		}
 	}
 }
 
-void ALunaEpocCharacter::GiveDefaultAbilities()
+void ALunaCharacter::GiveDefaultAbilities()
 {
 	if (HasAuthority() && AbilitySystemComponent)
 	{
@@ -131,12 +128,12 @@ void ALunaEpocCharacter::GiveDefaultAbilities()
 	}
 }
 
-UAbilitySystemComponent* ALunaEpocCharacter::GetAbilitySystemComponent() const
+UAbilitySystemComponent* ALunaCharacter::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
 }
 
-void ALunaEpocCharacter::Move(const FVector2D& InputVector)
+void ALunaCharacter::Move(const FVector2D& InputVector)
 {
 	// Move the character forward based on the Y component of MovementVector
 	AddMovementInput(FVector::ForwardVector, InputVector.Y);
@@ -145,12 +142,12 @@ void ALunaEpocCharacter::Move(const FVector2D& InputVector)
 	AddMovementInput(FVector::RightVector, InputVector.X);
 }
 
-void ALunaEpocCharacter::SetSprint(const bool bNewSprint)
+void ALunaCharacter::SetSprint(const bool bNewSprint)
 {
 	bShouldSprint = bNewSprint;
 }
 
-float ALunaEpocCharacter::SpeedModifier() const
+float ALunaCharacter::SpeedModifier() const
 {
 	// Get the forward vector of the player's mesh or capsule component
 	FVector PlayerForward = GetActorForwardVector();
@@ -166,22 +163,18 @@ float ALunaEpocCharacter::SpeedModifier() const
 	const float DotProduct = FVector::DotProduct(PlayerForward, MovementInput);
 
 	// Check if the dot product is less than the backwardThreshold
-	const bool bMovingBackward = DotProduct < -0.6f;
-
-	// Now, bMovingBackward will be true if the player is moving backward
-	if (bMovingBackward)
+	// will be true if the player is moving backward
+	if (DotProduct < -0.6f)
 	{
 		// Player is moving backward
 		return 0.5f; // Apply speed modifier for backward movement
 	}
-	else
-	{
-		// Player is not moving backward
-		return 1.0f; // Default speed modifier for other directions
-	}
+	
+	// Player is not moving backward
+	return 1.0f; // Default speed modifier for other directions
 }
 
-void ALunaEpocCharacter::RotateToMouse(float DeltaSeconds)
+void ALunaCharacter::RotateToMouse(float DeltaSeconds)
 {
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
 	if (!PlayerController)
@@ -212,12 +205,12 @@ void ALunaEpocCharacter::RotateToMouse(float DeltaSeconds)
 	FRotator TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), MouseWorldLocation);
 
 	// Interpolate rotation with the shortest path across -180/180 boundary
-	FRotator LerpedRotation = FMath::RInterpTo(CurrentRotation, TargetRotation, DeltaSeconds, RotationSpeed);
+	FRotator NewRotation = FMath::RInterpTo(CurrentRotation, TargetRotation, DeltaSeconds, RotationSpeed);
 
-	SetActorRotation(LerpedRotation);
+	SetActorRotation(NewRotation);
 }
 
-void ALunaEpocCharacter::InterpolateSpeed(float TargetSpeed, float DeltaTime)
+void ALunaCharacter::InterpolateSpeed(float TargetSpeed, float DeltaTime)
 {
 	CurrentSpeed = FMath::FInterpTo(CurrentSpeed, TargetSpeed, DeltaTime, InterpolationSpeed);
 	GetCharacterMovement()->MaxWalkSpeed = CurrentSpeed;

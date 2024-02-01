@@ -3,9 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Templates/SubclassOf.h"
 #include "GameFramework/PlayerController.h"
-#include "LunaEpocPlayerController.generated.h"
+#include "Templates/SubclassOf.h"
+#include "LunaPlayerController.generated.h"
 
 /** Forward declaration to improve compiling times */
 class UNiagaraSystem;
@@ -16,12 +16,12 @@ struct FInputActionValue;
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 UCLASS()
-class ALunaEpocPlayerController : public APlayerController
+class ALunaPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
 public:
-	ALunaEpocPlayerController();
+	ALunaPlayerController();
 
 	/** Time Threshold to know if it was a short press */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
@@ -56,7 +56,7 @@ protected:
 	virtual void SetupInputComponent() override;
 	
 	// To add mapping context
-	virtual void BeginPlay();
+	virtual void BeginPlay() override;
 
 	/** Input handlers for SetDestination action. */
 	void OnInputStarted();

@@ -1,14 +1,14 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "LunaEpocGameMode.h"
-#include "LunaEpocPlayerController.h"
-#include "LunaEpocCharacter.h"
+#include "LunaGameMode.h"
+
+#include "LunaPlayerController.h"
 #include "UObject/ConstructorHelpers.h"
 
-ALunaEpocGameMode::ALunaEpocGameMode()
+ALunaGameMode::ALunaGameMode()
 {
 	// use our custom PlayerController class
-	PlayerControllerClass = ALunaEpocPlayerController::StaticClass();
+	PlayerControllerClass = ALunaPlayerController::StaticClass();
 
 	// set default pawn class to our Blueprinted character
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/TopDown/Blueprints/BP_TopDownCharacter"));
@@ -19,7 +19,7 @@ ALunaEpocGameMode::ALunaEpocGameMode()
 
 	// set default controller to our Blueprinted controller
 	static ConstructorHelpers::FClassFinder<APlayerController> PlayerControllerBPClass(TEXT("/Game/TopDown/Blueprints/BP_TopDownPlayerController"));
-	if(PlayerControllerBPClass.Class != NULL)
+	if(PlayerControllerBPClass.Class != nullptr)
 	{
 		PlayerControllerClass = PlayerControllerBPClass.Class;
 	}

@@ -1,17 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "LunaEpochAnimInstance.h"
+#include "LunaAnimInstance.h"
 
 #include "GameFramework/Actor.h"
 #include "GameFramework/Character.h"
 
-ULunaEpochAnimInstance::ULunaEpochAnimInstance()
+ULunaAnimInstance::ULunaAnimInstance()
 {
-
 }
 
-void ULunaEpochAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
+void ULunaAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
     Super::NativeUpdateAnimation(DeltaSeconds);
 

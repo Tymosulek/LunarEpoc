@@ -4,19 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
-#include "LunaEpochAnimInstance.generated.h"
+#include "LunaAnimInstance.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class LUNAEPOC_API ULunaEpochAnimInstance : public UAnimInstance
+class LUNAEPOC_API ULunaAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 
 public:
     // Constructor
-    ULunaEpochAnimInstance();
+    ULunaAnimInstance();
 
     // Function to update animation (override from UAnimInstance)
     virtual void NativeUpdateAnimation(float DeltaSeconds) override;

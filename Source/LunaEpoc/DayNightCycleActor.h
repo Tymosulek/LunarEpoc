@@ -52,6 +52,6 @@ protected: /*properties*/
 	float NormalizedTimeOfDay = 0.5f;
 
 	UPROPERTY(EditAnywhere, Category = "Day Night Cycle")
-	class UDirectionalLightComponent* SunLightComponent;
+	UDirectionalLightComponent* SunLightComponent = nullptr;
 
 };

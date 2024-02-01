@@ -3,9 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Engine/DataAsset.h"
 #include "ActiveGameplayEffectHandle.h"
 #include "GameplayTagContainer.h"
+#include "Engine/DataAsset.h"
 
 #include "GameplayAbilitySpecHandle.h"
 

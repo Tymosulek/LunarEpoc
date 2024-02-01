@@ -4,15 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "LunaEpocGameMode.generated.h"
+#include "LunaGameMode.generated.h"
 
 UCLASS(minimalapi)
-class ALunaEpocGameMode : public AGameModeBase
+class ALunaGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
 public:
-	ALunaEpocGameMode();
+	ALunaGameMode();
 };
 
 
