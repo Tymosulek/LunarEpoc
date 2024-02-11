@@ -22,7 +22,9 @@ ALunaPlayerController::ALunaPlayerController()
 	SetDestinationClickAction(nullptr),
 	SetDestinationTouchAction(nullptr),
 	MoveAction(nullptr),
-	SprintAction(nullptr), bMoveToMouseCursor(0),
+	SprintAction(nullptr),
+	JumpAction(nullptr),
+	bMoveToMouseCursor(0),
 	bIsTouch(false)
 {
 	bShowMouseCursor = true;
@@ -68,6 +70,8 @@ void ALunaPlayerController::SetupInputComponent()
 
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ALunaPlayerController::Sprint);
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ALunaPlayerController::Sprint);
+
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ALunaPlayerController::Jump);
 	}
 	else
 	{
@@ -155,5 +159,13 @@ void ALunaPlayerController::Sprint(const FInputActionValue& Value)
 	if (ALunaCharacter* LunaCharacter = Cast<ALunaCharacter>(GetPawn()))
 	{
 		LunaCharacter->SetSprint(bShouldSprint);
+	}
+}
+
+void ALunaPlayerController::Jump(const FInputActionValue& Value)
+{
+	if (ALunaCharacter* LunaCharacter = Cast<ALunaCharacter>(GetPawn()))
+	{
+		LunaCharacter->Jump();
 	}
 }
