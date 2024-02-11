@@ -143,7 +143,7 @@ void ALunaPlayerController::OnTouchReleased()
 	OnSetDestinationReleased();
 }
 
-void ALunaPlayerController::Move(const FInputActionValue& Value) const
+void ALunaPlayerController::Move(const FInputActionValue& Value)
 {
 	const FVector2D MovementVector = Value.Get<FVector2D>();
 
@@ -153,7 +153,7 @@ void ALunaPlayerController::Move(const FInputActionValue& Value) const
 	}
 }
 
-void ALunaPlayerController::Sprint(const FInputActionValue& Value) const
+void ALunaPlayerController::Sprint(const FInputActionValue& Value)
 {
 	const bool bShouldSprint = Value.Get<bool>();
 	if (ALunaCharacter* LunaCharacter = Cast<ALunaCharacter>(GetPawn()))
@@ -162,7 +162,7 @@ void ALunaPlayerController::Sprint(const FInputActionValue& Value) const
 	}
 }
 
-void ALunaPlayerController::Jump(const FInputActionValue& Value) const
+void ALunaPlayerController::Jump(const FInputActionValue& Value)
 {
 	if (ALunaCharacter* LunaCharacter = Cast<ALunaCharacter>(GetPawn()))
 	{

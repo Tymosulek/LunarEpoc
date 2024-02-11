@@ -69,9 +69,9 @@ protected:
 	void OnTouchTriggered();
 	void OnTouchReleased();
 
-	void Move(const FInputActionValue& Value) const;
-	void Sprint(const FInputActionValue& Value) const;
-	void Jump(const FInputActionValue& Value) const;
+	void Move(const FInputActionValue& Value);
+	void Sprint(const FInputActionValue& Value);
+	void Jump(const FInputActionValue& Value);
 
 private:
 	FVector CachedDestination;
