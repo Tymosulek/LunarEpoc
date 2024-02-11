@@ -22,7 +22,9 @@ ALunaPlayerController::ALunaPlayerController()
 	SetDestinationClickAction(nullptr),
 	SetDestinationTouchAction(nullptr),
 	MoveAction(nullptr),
-	SprintAction(nullptr), bMoveToMouseCursor(0),
+	SprintAction(nullptr),
+	JumpAction(nullptr),
+	bMoveToMouseCursor(0),
 	bIsTouch(false)
 {
 	bShowMouseCursor = true;
@@ -68,6 +70,8 @@ void ALunaPlayerController::SetupInputComponent()
 
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ALunaPlayerController::Sprint);
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ALunaPlayerController::Sprint);
+
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ALunaPlayerController::Jump);
 	}
 	else
 	{
@@ -139,7 +143,7 @@ void ALunaPlayerController::OnTouchReleased()
 	OnSetDestinationReleased();
 }
 
-void ALunaPlayerController::Move(const FInputActionValue& Value)
+void ALunaPlayerController::Move(const FInputActionValue& Value) const
 {
 	const FVector2D MovementVector = Value.Get<FVector2D>();
 
@@ -149,11 +153,19 @@ void ALunaPlayerController::Move(const FInputActionValue& Value)
 	}
 }
 
-void ALunaPlayerController::Sprint(const FInputActionValue& Value)
+void ALunaPlayerController::Sprint(const FInputActionValue& Value) const
 {
 	const bool bShouldSprint = Value.Get<bool>();
 	if (ALunaCharacter* LunaCharacter = Cast<ALunaCharacter>(GetPawn()))
 	{
 		LunaCharacter->SetSprint(bShouldSprint);
+	}
+}
+
+void ALunaPlayerController::Jump(const FInputActionValue& Value) const
+{
+	if (ALunaCharacter* LunaCharacter = Cast<ALunaCharacter>(GetPawn()))
+	{
+		LunaCharacter->Jump();
 	}
 }

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InputActionValue.h"
 #include "GameFramework/PlayerController.h"
 #include "Templates/SubclassOf.h"
 #include "LunaPlayerController.generated.h"
@@ -49,6 +50,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UInputAction* SprintAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UInputAction* JumpAction;
+
 protected:
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;
@@ -65,8 +69,9 @@ protected:
 	void OnTouchTriggered();
 	void OnTouchReleased();
 
-	void Move(const FInputActionValue& Value);
-	void Sprint(const FInputActionValue& Value);
+	void Move(const FInputActionValue& Value) const;
+	void Sprint(const FInputActionValue& Value) const;
+	void Jump(const FInputActionValue& Value) const;
 
 private:
 	FVector CachedDestination;
