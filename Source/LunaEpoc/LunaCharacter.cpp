@@ -2,8 +2,7 @@
 
 #include "LunaCharacter.h"
 
-#include "LunaAttributeSet.h"
-
+#include "AbilitySystem/AttributeSets/LunaAttributeSet.h"
 #include "AbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
