@@ -15,34 +15,27 @@
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 ALunaPlayerController::ALunaPlayerController()
-	:
-	ShortPressThreshold(0),
-	FXCursor(nullptr),
-	DefaultMappingContext(nullptr),
-	SetDestinationClickAction(nullptr),
-	SetDestinationTouchAction(nullptr),
-	MoveAction(nullptr),
-	SprintAction(nullptr),
-	JumpAction(nullptr),
-	bMoveToMouseCursor(0),
-	bIsTouch(false)
 {
-	bShowMouseCursor = true;
-	DefaultMouseCursor = EMouseCursor::Default;
-	CachedDestination = FVector::ZeroVector;
-	FollowTime = 0.f;
+	bReplicates = true;
 }
 
 void ALunaPlayerController::BeginPlay()
 {
-	// Call the base class  
 	Super::BeginPlay();
 
-	//Add Input Mapping Context
-	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
-	{
-		Subsystem->AddMappingContext(DefaultMappingContext, 0);
-	}
+	check(DefaultMappingContext);
+
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+	check(Subsystem);
+	Subsystem->AddMappingContext(DefaultMappingContext, 0);
+
+	bShowMouseCursor = true;
+	DefaultMouseCursor = EMouseCursor::Default;
+
+	FInputModeGameAndUI InputModeData;
+	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+	InputModeData.SetHideCursorDuringCapture(false);
+	SetInputMode(InputModeData);
 }
 
 void ALunaPlayerController::SetupInputComponent()
@@ -53,24 +46,14 @@ void ALunaPlayerController::SetupInputComponent()
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent))
 	{
-		// Setup mouse input events
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &ALunaPlayerController::OnInputStarted);
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Triggered, this, &ALunaPlayerController::OnSetDestinationTriggered);
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Completed, this, &ALunaPlayerController::OnSetDestinationReleased);
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Canceled, this, &ALunaPlayerController::OnSetDestinationReleased);
-
-		// Setup touch input events
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Started, this, &ALunaPlayerController::OnInputStarted);
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Triggered, this, &ALunaPlayerController::OnTouchTriggered);
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Completed, this, &ALunaPlayerController::OnTouchReleased);
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Canceled, this, &ALunaPlayerController::OnTouchReleased);
-
 		//Movement
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ALunaPlayerController::Move);
 
+		//Sprint
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ALunaPlayerController::Sprint);
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ALunaPlayerController::Sprint);
 
+		//Jump
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ALunaPlayerController::Jump);
 	}
 	else
@@ -79,77 +62,24 @@ void ALunaPlayerController::SetupInputComponent()
 	}
 }
 
-void ALunaPlayerController::OnInputStarted()
-{
-	StopMovement();
-}
-
-// Triggered every frame when the input is held down
-void ALunaPlayerController::OnSetDestinationTriggered()
-{
-	// We flag that the input is being pressed
-	FollowTime += GetWorld()->GetDeltaSeconds();
-	
-	// We look for the location in the world where the player has pressed the input
-	FHitResult Hit;
-	bool bHitSuccessful;
-	if (bIsTouch)
-	{
-		bHitSuccessful = GetHitResultUnderFinger(ETouchIndex::Touch1, ECollisionChannel::ECC_Visibility, true, Hit);
-	}
-	else
-	{
-		bHitSuccessful = GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
-	}
-
-	// If we hit a surface, cache the location
-	if (bHitSuccessful)
-	{
-		CachedDestination = Hit.Location;
-	}
-	
-	// Move towards mouse pointer or touch
-	APawn* ControlledPawn = GetPawn();
-	if (ControlledPawn != nullptr)
-	{
-		const FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
-		ControlledPawn->AddMovementInput(WorldDirection, 1.0, false);
-	}
-}
-
-void ALunaPlayerController::OnSetDestinationReleased()
-{
-	// If it was a short press
-	if (FollowTime <= ShortPressThreshold)
-	{
-		// We move there and spawn some particles
-		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
-	}
-
-	FollowTime = 0.f;
-}
-
-// Triggered every frame when the input is held down
-void ALunaPlayerController::OnTouchTriggered()
-{
-	bIsTouch = true;
-	OnSetDestinationTriggered();
-}
-
-void ALunaPlayerController::OnTouchReleased()
-{
-	bIsTouch = false;
-	OnSetDestinationReleased();
-}
-
 void ALunaPlayerController::Move(const FInputActionValue& Value)
 {
-	const FVector2D MovementVector = Value.Get<FVector2D>();
+	const FVector2D InputAxisVector = Value.Get<FVector2D>();
 
-	if (ALunaCharacter* LunaCharacter = Cast<ALunaCharacter>(GetPawn()))
+	// find out which way is forward
+	const FRotator Rotation = GetControlRotation();
+	const FRotator YawRotation(0, Rotation.Yaw, 0);
+
+	// get forward vector
+	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+
+	// get right vector 
+	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+	if (APawn* ControlledPawn = GetPawn<APawn>())
 	{
-		LunaCharacter->Move(MovementVector);
+		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
+		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
 	}
 }
 
