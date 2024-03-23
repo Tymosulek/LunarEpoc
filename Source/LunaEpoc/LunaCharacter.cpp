@@ -60,7 +60,6 @@ void ALunaCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	GetCharacterMovement()->MaxWalkSpeed = MaxWalkSpeed;
-	bShouldSprint = false;
 	CurrentSpeed = MaxWalkSpeed;
 }
 
@@ -72,7 +71,7 @@ void ALunaCharacter::Tick(float DeltaSeconds)
 	RotateToMouse(DeltaSeconds);
 
 	//Gradually change the speed of character when sprinting/walking.
-	float TargetSpeed = bShouldSprint ? MaxSprintSpeed : MaxWalkSpeed;
+	float TargetSpeed = MaxWalkSpeed;
 	TargetSpeed *= SpeedModifier();
 	InterpolateSpeed(TargetSpeed, DeltaSeconds);
 }
@@ -131,20 +130,6 @@ void ALunaCharacter::GiveDefaultAbilities()
 UAbilitySystemComponent* ALunaCharacter::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
-}
-
-void ALunaCharacter::Move(const FVector2D& InputVector)
-{
-	// Move the character forward based on the Y component of MovementVector
-	AddMovementInput(FVector::ForwardVector, InputVector.Y);
-
-	// Move the character right based on the X component of MovementVector
-	AddMovementInput(FVector::RightVector, InputVector.X);
-}
-
-void ALunaCharacter::SetSprint(const bool bNewSprint)
-{
-	bShouldSprint = bNewSprint;
 }
 
 float ALunaCharacter::SpeedModifier() const

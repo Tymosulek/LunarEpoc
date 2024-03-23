@@ -29,12 +29,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UInputAction* MoveAction;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	UInputAction* SprintAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	UInputAction* JumpAction;
-
 protected:
 
 	virtual void BeginPlay() override;
@@ -43,9 +37,6 @@ protected:
 private:
 
 	void Move(const FInputActionValue& Value);
-	void Sprint(const FInputActionValue& Value);
-	void Jump(const FInputActionValue& Value);
-
 };
 
 

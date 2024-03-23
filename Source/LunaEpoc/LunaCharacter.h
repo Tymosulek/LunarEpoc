@@ -26,9 +26,6 @@ public: /*Designer Facing Tunable*/
 	float MaxWalkSpeed = 250.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
-	float MaxSprintSpeed = 550.f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
 	float InterpolationSpeed = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Attributes)
@@ -54,9 +51,6 @@ public: /*Functions*/
 	virtual void InitializeAttributes();
 	virtual void GiveDefaultAbilities();
 
-
-	void Move(const FVector2D& InputVector);
-	void SetSprint(const bool bNewSprint);
 	float SpeedModifier() const;
 
 	/** Returns TopDownCameraComponent subject **/
@@ -90,7 +84,6 @@ protected: /*properties*/
 	UPROPERTY()
 	class ULunaAttributeSet* Attributes;
 
-	bool bShouldSprint;// = false;
 	float CurrentSpeed;// = MaxWalkSpeed;
 };
 

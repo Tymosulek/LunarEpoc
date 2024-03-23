@@ -48,13 +48,6 @@ void ALunaPlayerController::SetupInputComponent()
 	{
 		//Movement
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ALunaPlayerController::Move);
-
-		//Sprint
-		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ALunaPlayerController::Sprint);
-		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ALunaPlayerController::Sprint);
-
-		//Jump
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ALunaPlayerController::Jump);
 	}
 	else
 	{
@@ -80,22 +73,5 @@ void ALunaPlayerController::Move(const FInputActionValue& Value)
 	{
 		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
 		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
-	}
-}
-
-void ALunaPlayerController::Sprint(const FInputActionValue& Value)
-{
-	const bool bShouldSprint = Value.Get<bool>();
-	if (ALunaCharacter* LunaCharacter = Cast<ALunaCharacter>(GetPawn()))
-	{
-		LunaCharacter->SetSprint(bShouldSprint);
-	}
-}
-
-void ALunaPlayerController::Jump(const FInputActionValue& Value)
-{
-	if (ALunaCharacter* LunaCharacter = Cast<ALunaCharacter>(GetPawn()))
-	{
-		LunaCharacter->Jump();
 	}
 }
