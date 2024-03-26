@@ -6,14 +6,14 @@
 
 //Engine
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "Character/LunaCharacterBase.h"
 #include "GameplayEffectTypes.h"
 #include "AbilitySystemInterface.h"
 
 #include "LunaCharacter.generated.h"
 
 UCLASS(Blueprintable)
-class ALunaCharacter : public ACharacter, public IAbilitySystemInterface
+class ALunaCharacter : public ALunaCharacterBase, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
