@@ -4,4 +4,6 @@
 
 #include "CoreMinimal.h"
 
+#define CUSTOM_DEPTH_RED 250
+
 DECLARE_LOG_CATEGORY_EXTERN(LogLunaEpoc, Log, All);

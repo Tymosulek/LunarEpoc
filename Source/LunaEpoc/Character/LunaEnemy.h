@@ -18,13 +18,12 @@ class LUNAEPOC_API ALunaEnemy : public ALunaCharacterBase, public IEnemyInterfac
 public: /*Designer Facing*/
 
 public: /*Functions*/
+	ALunaEnemy();
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
 
 protected: /*functions*/
 
 protected: /*properties*/
-	UPROPERTY(BlueprintReadOnly)
-	bool bHighlighted = false;
 
 };
