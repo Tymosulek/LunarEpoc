@@ -11,6 +11,7 @@
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
+class IEnemyInterface;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
@@ -19,9 +20,7 @@ class ALunaPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
-public:
-	ALunaPlayerController();
-
+public: /*Designer Facing*/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UInputMappingContext* DefaultMappingContext;
 	
@@ -29,14 +28,21 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UInputAction* MoveAction;
 
-protected:
+public: /*Functions*/
+	ALunaPlayerController();
+	virtual void PlayerTick(float DeltaTime) override;
 
+protected: /*functions*/
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
 
-private:
-
 	void Move(const FInputActionValue& Value);
+	void CursorTrace();
+
+protected: /*properties*/
+
+	TObjectPtr<IEnemyInterface> LastActor;
+	TObjectPtr<IEnemyInterface> ThisActor;
 };
 
 

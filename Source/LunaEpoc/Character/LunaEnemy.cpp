@@ -3,3 +3,12 @@
 
 #include "LunaEnemy.h"
 
+void ALunaEnemy::HighlightActor()
+{
+	bHighlighted = true;
+}
+
+void ALunaEnemy::UnHighlightActor()
+{
+	bHighlighted = false;
+}
