@@ -13,6 +13,16 @@ ALunaCharacterBase::ALunaCharacterBase()
 
 }
 
+UAbilitySystemComponent* ALunaCharacterBase::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
+UAttributeSet* ALunaCharacterBase::GetAttributeSet() const
+{
+	return AttributeSet;
+}
+
 void ALunaCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();

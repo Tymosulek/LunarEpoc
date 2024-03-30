@@ -23,6 +23,7 @@ public: /*Functions*/
 	virtual void UnHighlightActor() override;
 
 protected: /*functions*/
+	virtual void BeginPlay() override;
 
 protected: /*properties*/
 

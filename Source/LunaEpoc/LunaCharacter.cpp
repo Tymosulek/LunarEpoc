@@ -2,8 +2,6 @@
 
 #include "LunaCharacter.h"
 
-#include "AbilitySystem/AttributeSets/LunaAttributeSet.h"
-#include "AbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/World.h"
@@ -12,7 +10,9 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Materials/Material.h"
+#include "Player/LunaPlayerState.h"
 #include "UObject/ConstructorHelpers.h"
+#include "LunaEpoc/AbilitySystem/Components/LunaAbilitySystemComponent.h"
 
 ALunaCharacter::ALunaCharacter()
 {
@@ -44,14 +44,32 @@ ALunaCharacter::ALunaCharacter()
 	// Activate ticking in order to update the cursor every frame.
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
+}
 
-	//Ability System Component Creation
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
-	AbilitySystemComponent->SetIsReplicated(true);
-	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+void ALunaCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
 
-	//Attribute Set Creation
-	Attributes = CreateDefaultSubobject<ULunaAttributeSet>(TEXT("AttributeSet"));
+	// Init ability actor info for the Server.
+	InitAbilityActorInfo();
+}
+
+void ALunaCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+
+	// Init ability actor info for the Client.
+	InitAbilityActorInfo();
+}
+
+void ALunaCharacter::InitAbilityActorInfo()
+{
+	APlayerState* PS = GetPlayerState();
+	ALunaPlayerState* LunaPlayerState = GetPlayerState<ALunaPlayerState>();
+	check(LunaPlayerState)
+	LunaPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(LunaPlayerState, this);
+	AbilitySystemComponent = LunaPlayerState->GetAbilitySystemComponent();
+	AttributeSet = LunaPlayerState->GetAttributeSet();
 }
 
 void ALunaCharacter::BeginPlay()
@@ -73,62 +91,6 @@ void ALunaCharacter::Tick(float DeltaSeconds)
 	float TargetSpeed = MaxWalkSpeed;
 	TargetSpeed *= SpeedModifier();
 	InterpolateSpeed(TargetSpeed, DeltaSeconds);
-}
-
-void ALunaCharacter::PossessedBy(AController* NewController)
-{
-	Super::PossessedBy(NewController);
-
-	if (AbilitySystemComponent)
-	{
-		AbilitySystemComponent->InitAbilityActorInfo(this, this);
-	}
-
-	InitializeAttributes();
-	GiveDefaultAbilities();
-}
-
-void ALunaCharacter::OnRep_PlayerState()
-{
-	Super::OnRep_PlayerState();
-
-	if (AbilitySystemComponent)
-	{
-		AbilitySystemComponent->InitAbilityActorInfo(this, this);
-	}
-
-	InitializeAttributes();
-}
-
-void ALunaCharacter::InitializeAttributes()
-{
-	if (AbilitySystemComponent && DefaultAttributeEffect)
-	{
-		FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
-		EffectContext.AddSourceObject(this);
-
-		if (const FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(
-			DefaultAttributeEffect, 1, EffectContext); SpecHandle.IsValid())
-		{
-			AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-		}
-	}
-}
-
-void ALunaCharacter::GiveDefaultAbilities()
-{
-	if (HasAuthority() && AbilitySystemComponent)
-	{
-		for (auto& StartupAbility : DefaultAbilities)
-		{
-			AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(StartupAbility.GetDefaultObject(), 1, 0));
-		}
-	}
-}
-
-UAbilitySystemComponent* ALunaCharacter::GetAbilitySystemComponent() const
-{
-	return AbilitySystemComponent;
 }
 
 float ALunaCharacter::SpeedModifier() const

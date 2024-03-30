@@ -3,6 +3,8 @@
 
 #include "LunaEnemy.h"
 #include "LunaEpoc/LunaEpoc.h"
+#include "LunaEpoc/AbilitySystem/Components/LunaAbilitySystemComponent.h"
+#include "LunaEpoc/AbilitySystem/AttributeSets/LunaAttributeSet.h"
 
 ALunaEnemy::ALunaEnemy()
 {
@@ -10,6 +12,16 @@ ALunaEnemy::ALunaEnemy()
 	{
 		CharacterMesh->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 	}
+
+	//Setup ASC
+	AbilitySystemComponent = CreateDefaultSubobject<ULunaAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent->SetIsReplicated(true);
+	//Set replication mode to Minimal as will be an AI controlled character.
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+
+
+	//Setup Attributes
+	AttributeSet = CreateDefaultSubobject<ULunaAttributeSet>(TEXT("AttributeSet"));
 }
 
 void ALunaEnemy::HighlightActor()
@@ -36,4 +48,10 @@ void ALunaEnemy::UnHighlightActor()
 	{
 		Weapon->SetRenderCustomDepth(false);
 	}
+}
+
+void ALunaEnemy::BeginPlay()
+{
+	check(AbilitySystemComponent);
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
