@@ -41,8 +41,8 @@ protected: /*functions*/
 
 protected: /*properties*/
 
-	TObjectPtr<IEnemyInterface> LastActor;
-	TObjectPtr<IEnemyInterface> ThisActor;
+	IEnemyInterface* LastActor = nullptr;
+	IEnemyInterface* ThisActor = nullptr;
 };
 
 

@@ -7,6 +7,12 @@
 #include "LunaHUD.generated.h"
 
 class ULunaUserWidget;
+class APlayerController;
+class APlayerState;
+class UAbilitySystemComponent;
+class UAttributeSet;
+class UOverlayWidgetController;
+struct FWidgetControllerParams;
 
 UCLASS()
 class LUNAEPOC_API ALunaHUD : public AHUD
@@ -15,14 +21,27 @@ class LUNAEPOC_API ALunaHUD : public AHUD
 
 public:
 
+	UPROPERTY()
+	TObjectPtr<ULunaUserWidget> OverlayWidget;
+
+	UFUNCTION(BlueprintCallable)
+	UOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerParams& WCParams);
+
+	void InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* Asc, UAttributeSet* As);
+
 protected: /*functions*/
 
-	virtual void BeginPlay() override;
 
 protected: /*properties*/
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ULunaUserWidget> OverlayWidgetClass;
+
+	UPROPERTY()
+	TObjectPtr<UOverlayWidgetController> OverlayWidgetController;
+	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UOverlayWidgetController> OverlayWidgetControllerClass;
 
 	
 };

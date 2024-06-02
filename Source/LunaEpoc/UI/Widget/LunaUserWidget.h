@@ -14,4 +14,15 @@ class LUNAEPOC_API ULunaUserWidget : public UUserWidget
 {
 	GENERATED_BODY()
 	
+public:
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UObject>  WidgetController;
+
+public:
+	UFUNCTION(BlueprintCallable)
+	void SetWidgetController(UObject* NewController);
+protected:
+	UFUNCTION(BlueprintImplementableEvent)
+	void WidgetControllerSet();
+	
 };
