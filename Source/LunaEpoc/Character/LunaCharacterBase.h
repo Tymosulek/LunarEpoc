@@ -9,6 +9,7 @@
 
 class UAbilitySystemComponent;
 class UAttributeSet;
+class ULunaCharacterMovementComponent;
 
 UCLASS(Abstract)
 class LUNAEPOC_API ALunaCharacterBase : public ACharacter, public IAbilitySystemInterface
@@ -17,8 +18,10 @@ class LUNAEPOC_API ALunaCharacterBase : public ACharacter, public IAbilitySystem
 
 public:
 	ALunaCharacterBase();
+	ALunaCharacterBase(const FObjectInitializer& ObjectInitializer);
 	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const;
+	ULunaCharacterMovementComponent* GetLunaMovementComponent() const;
 
 protected:
 	virtual void BeginPlay() override;

@@ -23,10 +23,7 @@ ALunaCharacter::ALunaCharacter()
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
 
-	// Configure character movement
-	GetCharacterMovement()->RotationRate = FRotator(0.f, 640.f, 0.f);
-	GetCharacterMovement()->bConstrainToPlane = true;
-	GetCharacterMovement()->bSnapToPlaneAtStart = true;
+	//Movement handled in ULunaCharacterMovementComponent.
 
 	// Create a camera boom...
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
@@ -75,9 +72,6 @@ void ALunaCharacter::InitAbilityActorInfo()
 void ALunaCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	GetCharacterMovement()->MaxWalkSpeed = MaxWalkSpeed;
-	CurrentSpeed = MaxWalkSpeed;
 }
 
 void ALunaCharacter::Tick(float DeltaSeconds)
@@ -86,38 +80,6 @@ void ALunaCharacter::Tick(float DeltaSeconds)
 
 	//Make character rotate to face mouse position.
 	RotateToMouse(DeltaSeconds);
-
-	//Gradually change the speed of character when sprinting/walking.
-	float TargetSpeed = MaxWalkSpeed;
-	TargetSpeed *= SpeedModifier();
-	InterpolateSpeed(TargetSpeed, DeltaSeconds);
-}
-
-float ALunaCharacter::SpeedModifier() const
-{
-	// Get the forward vector of the player's mesh or capsule component
-	FVector PlayerForward = GetActorForwardVector();
-
-	// Last input vector to show which direction character is moving
-	FVector MovementInput = GetLastMovementInputVector();
-
-	// Normalize vectors to ensure accurate dot product results
-	PlayerForward.Normalize();
-	MovementInput.Normalize();
-
-	// Calculate the dot product
-	const float DotProduct = FVector::DotProduct(PlayerForward, MovementInput);
-
-	// Check if the dot product is less than the backwardThreshold
-	// will be true if the player is moving backward
-	if (DotProduct < -0.6f)
-	{
-		// Player is moving backward
-		return 0.5f; // Apply speed modifier for backward movement
-	}
-	
-	// Player is not moving backward
-	return 1.0f; // Default speed modifier for other directions
 }
 
 void ALunaCharacter::RotateToMouse(float DeltaSeconds)
@@ -154,10 +116,4 @@ void ALunaCharacter::RotateToMouse(float DeltaSeconds)
 	FRotator NewRotation = FMath::RInterpTo(CurrentRotation, TargetRotation, DeltaSeconds, RotationSpeed);
 
 	SetActorRotation(NewRotation);
-}
-
-void ALunaCharacter::InterpolateSpeed(float TargetSpeed, float DeltaTime)
-{
-	CurrentSpeed = FMath::FInterpTo(CurrentSpeed, TargetSpeed, DeltaTime, InterpolationSpeed);
-	GetCharacterMovement()->MaxWalkSpeed = CurrentSpeed;
 }

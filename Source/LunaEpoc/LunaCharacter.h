@@ -22,12 +22,6 @@ public: /*Designer Facing Tunable*/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	float RotationSpeed = 500.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
-	float MaxWalkSpeed = 250.f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
-	float InterpolationSpeed = 100.f;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Attributes)
 	int MaxHealth = 100;
 
@@ -43,8 +37,6 @@ public: /*Functions*/
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 
-	float SpeedModifier() const;
-
 	/** Returns TopDownCameraComponent subject **/
 	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	/** Returns CameraBoom subject **/
@@ -57,7 +49,7 @@ protected: /*functions*/
 
 	void InitAbilityActorInfo();
 	void RotateToMouse(float DeltaSeconds);
-	void InterpolateSpeed(float TargetSpeed, float DeltaTime);
+
 
 protected: /*properties*/
 
@@ -68,7 +60,5 @@ protected: /*properties*/
 	/** Camera boom positioning the camera above the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* CameraBoom;
-
-	float CurrentSpeed;// = MaxWalkSpeed;
 };
 

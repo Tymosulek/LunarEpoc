@@ -2,15 +2,21 @@
 
 
 #include "LunaCharacterBase.h"
+#include "LunaCharacterMovementComponent.h"
 
 ALunaCharacterBase::ALunaCharacterBase()
+{
+}
+
+ALunaCharacterBase::ALunaCharacterBase(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<ULunaCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
+
 {
 	PrimaryActorTick.bCanEverTick = false;
 
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
 	Weapon->SetupAttachment(GetMesh(), FName("WeaponHandSocket"));
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
 }
 
 UAbilitySystemComponent* ALunaCharacterBase::GetAbilitySystemComponent() const
@@ -21,6 +27,11 @@ UAbilitySystemComponent* ALunaCharacterBase::GetAbilitySystemComponent() const
 UAttributeSet* ALunaCharacterBase::GetAttributeSet() const
 {
 	return AttributeSet;
+}
+
+ULunaCharacterMovementComponent* ALunaCharacterBase::GetLunaMovementComponent() const
+{
+	return GetCharacterMovement<ULunaCharacterMovementComponent>();
 }
 
 void ALunaCharacterBase::BeginPlay()
