@@ -2,9 +2,11 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+
+#include "LunaEpoc/Weapons/AWeapon.h"
 #include "LunaCharacterBase.generated.h"
 
 class UAbilitySystemComponent;
@@ -34,4 +36,12 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet = nullptr;
+
+protected:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<AWeapon> DefaultWeaponClass;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (AllowPrivateAccess = "true"))
+	AWeapon* CurrentWeapon;
 };

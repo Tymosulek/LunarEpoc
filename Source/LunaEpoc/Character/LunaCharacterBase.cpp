@@ -4,6 +4,7 @@
 #include "LunaCharacterBase.h"
 #include "LunaCharacterMovementComponent.h"
 
+
 ALunaCharacterBase::ALunaCharacterBase()
 {
 }
@@ -37,5 +38,18 @@ ULunaCharacterMovementComponent* ALunaCharacterBase::GetLunaMovementComponent() 
 void ALunaCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (IsValid(DefaultWeaponClass))
+	{
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		SpawnParams.Instigator = GetInstigator();
+
+		CurrentWeapon = GetWorld()->SpawnActor<AWeapon>(DefaultWeaponClass, SpawnParams);
+		if (CurrentWeapon)
+		{
+			CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("WeaponSocket"));
+		}
+	}
 	
 }
