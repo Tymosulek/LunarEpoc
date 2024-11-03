@@ -38,13 +38,13 @@ protected: /*functions*/
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
-	void UpdateTimeOfDay();
+	void UpdateTimeOfDay() const;
 
 	UFUNCTION()
-	void UpdateSunDirection();
+	void UpdateSunDirection() const;
 
 	UFUNCTION()
-	void UpdateLighting();
+	static void UpdateLighting();
 
 protected: /*properties*/
 

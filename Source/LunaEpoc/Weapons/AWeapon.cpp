@@ -12,29 +12,11 @@ AWeapon::AWeapon()
 	RootComponent = WeaponMesh;
 }
 
-void AWeapon::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-void AWeapon::PlayFireAnimation()
-{
-    // Logic for playing the firing animation
-}
-
-void AWeapon::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
 void AWeapon::Fire()
 {
     if (AmmoCount > 0)
     {
         --AmmoCount;
-        PlayFireAnimation();
-        // Logic to deal damage to target here
         GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, TEXT("Weapon Fired!"));
     }
     else
@@ -47,6 +29,5 @@ void AWeapon::Reload()
 {
     AmmoCount = MaxAmmo;
     GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, TEXT("Weapon Reloaded!"));
-
 }
 

@@ -2,21 +2,19 @@
 
 
 #include "DayNightCycleActor.h"
+
 #include "Components/DirectionalLightComponent.h"
 #include "Engine/DirectionalLight.h"
 #include "Kismet/GameplayStatics.h" 
 
 ADayNightCycleActor::ADayNightCycleActor()
-:
-SunLightComponent(nullptr)
 {
     PrimaryActorTick.bCanEverTick = true;
 }
 
 void ADayNightCycleActor::BeginPlay()
 {
-	Super::BeginPlay();
-
+    Super::BeginPlay();
 
     // Find and set the existing directional light component in the level
     TArray<AActor*> FoundActors;
@@ -30,10 +28,10 @@ void ADayNightCycleActor::BeginPlay()
 
     check(SunLightComponent);
 
-	UpdateTimeOfDay();	
+    UpdateTimeOfDay();
 }
 
-void ADayNightCycleActor::UpdateTimeOfDay()
+void ADayNightCycleActor::UpdateTimeOfDay() const
 {
     // Implement logic to update any other time-dependent parameters if needed
     const int32 TimeInSeconds = static_cast<int32>((NormalizedTimeOfDay * 86400.0f));
@@ -42,7 +40,7 @@ void ADayNightCycleActor::UpdateTimeOfDay()
            Timespan.GetSeconds());
 }
 
-void ADayNightCycleActor::UpdateSunDirection()
+void ADayNightCycleActor::UpdateSunDirection() const
 {
     // Calculate the sun angle based on the normalized time of day
     float SunAngle = ((NormalizedTimeOfDay - SunsetHour / 24.0f) + 1.0f) * 360.0f;
@@ -60,7 +58,7 @@ void ADayNightCycleActor::UpdateLighting()
 // Called every frame
 void ADayNightCycleActor::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+    Super::Tick(DeltaTime);
 
     // Update time of day
     NormalizedTimeOfDay += DeltaTime / DayLengthInSeconds;
@@ -74,4 +72,3 @@ void ADayNightCycleActor::Tick(float DeltaTime)
     UpdateSunDirection();
     UpdateLighting();
 }
-

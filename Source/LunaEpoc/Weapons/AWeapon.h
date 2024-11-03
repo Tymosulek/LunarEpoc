@@ -29,21 +29,6 @@ public: /*Functions*/
 
 	AWeapon();
 
-	virtual void Tick(float DeltaTime) override;
-
 	void Fire();
 	void Reload();
-
-public: /*Properties*/
-
-protected: /*functions*/
-
-	virtual void BeginPlay() override;
-
-	void PlayFireAnimation();
-
-
-protected: /*properties*/
-
-
 };

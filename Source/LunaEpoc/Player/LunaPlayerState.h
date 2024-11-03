@@ -20,7 +20,7 @@ class LUNAEPOC_API ALunaPlayerState : public APlayerState, public IAbilitySystem
 
 public:
 	ALunaPlayerState();
-	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const;
 
 protected:

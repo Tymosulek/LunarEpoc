@@ -3,12 +3,10 @@
 #pragma once
 
 //Game
+#include "Character/LunaCharacterBase.h"
 
 //Engine
 #include "CoreMinimal.h"
-#include "Character/LunaCharacterBase.h"
-#include "GameplayEffectTypes.h"
-#include "AbilitySystemInterface.h"
 
 #include "LunaCharacter.generated.h"
 
