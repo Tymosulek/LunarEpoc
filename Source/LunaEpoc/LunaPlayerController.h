@@ -22,11 +22,11 @@ class ALunaPlayerController : public APlayerController
 
 public: /*Designer Facing*/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	UInputMappingContext* DefaultMappingContext;
+	UInputMappingContext* DefaultMappingContext{nullptr};
 	
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	UInputAction* MoveAction;
+	UInputAction* MoveAction{nullptr};
 
 public: /*Functions*/
 	ALunaPlayerController();

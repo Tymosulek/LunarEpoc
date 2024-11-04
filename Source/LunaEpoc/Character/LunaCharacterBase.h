@@ -20,8 +20,8 @@ class LUNAEPOC_API ALunaCharacterBase : public ACharacter, public IAbilitySystem
 
 public:
 	ALunaCharacterBase();
-	ALunaCharacterBase(const FObjectInitializer& ObjectInitializer);
-	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	explicit ALunaCharacterBase(const FObjectInitializer& ObjectInitializer);
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const;
 	ULunaCharacterMovementComponent* GetLunaMovementComponent() const;
 
@@ -43,5 +43,5 @@ protected:
 	TSubclassOf<AWeapon> DefaultWeaponClass;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (AllowPrivateAccess = "true"))
-	AWeapon* CurrentWeapon;
+	AWeapon* CurrentWeapon{nullptr};
 };

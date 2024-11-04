@@ -25,9 +25,9 @@ public:
 protected:
 
     UPROPERTY(BlueprintReadOnly)
-    float Speed;
+    float Speed{0.f};
 
     UPROPERTY(BlueprintReadOnly)
-    float DirectionDegrees;
+    float DirectionDegrees{0.f};
 
 };

@@ -5,9 +5,6 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
-#include "LunaCharacter.h"
-#include "NiagaraFunctionLibrary.h"
-#include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Engine/LocalPlayer.h"
 #include "Engine/World.h"
 #include "GameFramework/Pawn.h"
@@ -90,6 +87,7 @@ void ALunaPlayerController::SetupInputComponent()
 	}
 }
 
+// ReSharper disable once CppMemberFunctionMayBeConst
 void ALunaPlayerController::Move(const FInputActionValue& Value)
 {
 	const FVector2D InputAxisVector = Value.Get<FVector2D>();

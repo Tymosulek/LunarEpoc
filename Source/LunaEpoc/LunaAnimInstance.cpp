@@ -10,6 +10,7 @@ ULunaAnimInstance::ULunaAnimInstance()
 {
 }
 
+// ReSharper disable once CppParameterMayBeConst
 void ULunaAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
     Super::NativeUpdateAnimation(DeltaSeconds);
@@ -17,7 +18,7 @@ void ULunaAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
     // Assuming you have a reference to the owning actor and it is a character
     AActor* Owner = GetOwningActor();
 
-    ACharacter* OwningCharacter = Cast<ACharacter>(Owner);
+    const ACharacter* OwningCharacter = Cast<ACharacter>(Owner);
     if (!OwningCharacter)
     {
         // Handle the case where the owning actor is not a character
@@ -25,7 +26,7 @@ void ULunaAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
     }
 
     // Get the character's velocity
-    FVector Velocity = OwningCharacter->GetVelocity();
+    const FVector Velocity = OwningCharacter->GetVelocity();
     Speed = Velocity.Size();
 
 
@@ -33,14 +34,14 @@ void ULunaAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
     if (!Velocity.IsNearlyZero())
     {
         // Get the character's forward vector
-        FVector CharacterForward = OwningCharacter->GetActorForwardVector();
+        const FVector CharacterForward = OwningCharacter->GetActorForwardVector();
 
         // Normalize the velocity to get the direction
-        FVector Direction = Velocity.GetSafeNormal();
+        const FVector Direction = Velocity.GetSafeNormal();
 
         // Calculate the signed angle between character's forward vector and movement direction
-        float MovementDegrees = FMath::Atan2(Direction.Y, Direction.X) * 180.0f / PI;
-        float CharacterFacingDegrees = FMath::Atan2(CharacterForward.Y, CharacterForward.X) * 180.0f / PI;
+        const float MovementDegrees = FMath::Atan2(Direction.Y, Direction.X) * 180.0f / PI;
+        const float CharacterFacingDegrees = FMath::Atan2(CharacterForward.Y, CharacterForward.X) * 180.0f / PI;
 
         // Calculate the angle difference
         float AdjustedDegrees = CharacterFacingDegrees - MovementDegrees;
@@ -61,8 +62,7 @@ void ULunaAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
         DirectionDegrees = AdjustedDegrees;
 
         // Display the adjusted degrees on screen for debugging
-       // FString DebugText = FString::Printf(TEXT("Direction Degrees: %.2f"), DirectionDegrees);
-       // GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, DebugText);
-
+        // FString DebugText = FString::Printf(TEXT("Direction Degrees: %.2f"), DirectionDegrees);
+        // GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, DebugText);
     }
 }

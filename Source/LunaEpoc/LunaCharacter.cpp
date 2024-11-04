@@ -2,17 +2,18 @@
 
 #include "LunaCharacter.h"
 
+//game
+#include "LunaEpoc/AbilitySystem/Components/LunaAbilitySystemComponent.h"
+#include "Player/LunaPlayerState.h"
+//engine
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/World.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Materials/Material.h"
-#include "Player/LunaPlayerState.h"
 #include "UObject/ConstructorHelpers.h"
-#include "LunaEpoc/AbilitySystem/Components/LunaAbilitySystemComponent.h"
 
 ALunaCharacter::ALunaCharacter()
 {
@@ -61,7 +62,6 @@ void ALunaCharacter::OnRep_PlayerState()
 
 void ALunaCharacter::InitAbilityActorInfo()
 {
-	APlayerState* PS = GetPlayerState();
 	ALunaPlayerState* LunaPlayerState = GetPlayerState<ALunaPlayerState>();
 	check(LunaPlayerState)
 	LunaPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(LunaPlayerState, this);

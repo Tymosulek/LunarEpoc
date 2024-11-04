@@ -10,7 +10,8 @@ ALunaCharacterBase::ALunaCharacterBase()
 }
 
 ALunaCharacterBase::ALunaCharacterBase(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer.SetDefaultSubobjectClass<ULunaCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<ULunaCharacterMovementComponent>(
+		ACharacter::CharacterMovementComponentName))
 
 {
 	PrimaryActorTick.bCanEverTick = false;
@@ -48,8 +49,8 @@ void ALunaCharacterBase::BeginPlay()
 		CurrentWeapon = GetWorld()->SpawnActor<AWeapon>(DefaultWeaponClass, SpawnParams);
 		if (CurrentWeapon)
 		{
-			CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("WeaponSocket"));
+			CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale,
+			                                 TEXT("WeaponSocket"));
 		}
 	}
-	
 }

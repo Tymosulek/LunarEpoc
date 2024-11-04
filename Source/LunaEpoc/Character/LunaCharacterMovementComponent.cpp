@@ -27,10 +27,9 @@ void ULunaCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTick 
 	{
 		InterpolateSpeed(TargetSpeed, DeltaTime);
 	}
-
 }
 
-void ULunaCharacterMovementComponent::InterpolateSpeed(float TargetSpeed, float DeltaTime)
+void ULunaCharacterMovementComponent::InterpolateSpeed(const float TargetSpeed, const float DeltaTime)
 {
 	CurrentSpeed = FMath::FInterpTo(CurrentSpeed, TargetSpeed, DeltaTime, InterpolationSpeed);
 	MaxWalkSpeed = CurrentSpeed;
@@ -38,7 +37,7 @@ void ULunaCharacterMovementComponent::InterpolateSpeed(float TargetSpeed, float 
 
 float ULunaCharacterMovementComponent::SpeedModifier() const
 {
-	ACharacter* Owner = Cast<ACharacter>(GetOwner());
+	const ACharacter* Owner = Cast<ACharacter>(GetOwner());
 	if (!Owner) return 1.0f;
 
 	FVector PlayerForward = Owner->GetActorForwardVector();
