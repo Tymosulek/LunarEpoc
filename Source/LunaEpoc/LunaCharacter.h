@@ -18,7 +18,7 @@ class ALunaCharacter : public ALunaCharacterBase
 public: /*Designer Facing Tunable*/
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	float RotationSpeed = 500.f;
+	float RotationSpeed = 5.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Attributes)
 	int MaxHealth = 100;
