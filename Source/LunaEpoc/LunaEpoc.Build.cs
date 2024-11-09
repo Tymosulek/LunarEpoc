@@ -18,7 +18,10 @@ public class LunaEpoc : ModuleRules
 			"AIModule",
 			"Niagara",
 			"EnhancedInput",
-            "GameplayAbilities"
+            "GameplayAbilities",
+            "Wwise",
+            "AkAudio", 
+            "WwiseSoundEngine"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[]
