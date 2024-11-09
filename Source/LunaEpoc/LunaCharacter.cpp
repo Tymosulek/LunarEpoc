@@ -69,6 +69,46 @@ void ALunaCharacter::InitAbilityActorInfo()
 	AttributeSet = LunaPlayerState->GetAttributeSet();
 }
 
+void ALunaCharacter::RotateToMouse(float DeltaSeconds)
+{
+	const APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	if (!PlayerController)
+	{
+		return;
+	}
+
+	FHitResult HitResult;
+
+	ETraceTypeQuery TraceType = UEngineTypes::ConvertToTraceType(ECC_GameTraceChannel1);
+	
+	// Assuming ECC_GameTraceChannel1 is your custom collision channel
+	if (!PlayerController->GetHitResultUnderCursorByChannel(
+			TraceType,  // Custom collision channel
+			false,                  // Trace complex geometry (set to true if you want more accurate tracing)
+			HitResult))
+	{
+		return;
+	}
+
+	// Keep the character's Z position the same to avoid looking up/down at objects
+	FVector TargetLocation = HitResult.Location;
+	TargetLocation.Z = GetActorLocation().Z;
+
+	// Calculate target rotation in FRotator form
+	FRotator TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), TargetLocation);
+
+	// Convert to FQuat for smooth interpolation
+	FQuat CurrentQuat = GetActorRotation().Quaternion();
+	FQuat TargetQuat = TargetRotation.Quaternion();
+
+	// Smoothly interpolate using Slerp
+	FQuat NewQuat = FQuat::Slerp(CurrentQuat, TargetQuat, DeltaSeconds * RotationSpeed);
+
+	// Convert back to FRotator and apply
+	FRotator NewRotation = NewQuat.Rotator();
+	SetActorRotation(NewRotation);
+}
+
 void ALunaCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -78,42 +118,5 @@ void ALunaCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	//Make character rotate to face mouse position.
 	RotateToMouse(DeltaSeconds);
-}
-
-void ALunaCharacter::RotateToMouse(float DeltaSeconds)
-{
-	APlayerController* PlayerController = Cast<APlayerController>(GetController());
-	if (!PlayerController)
-	{
-		return;
-	}
-
-	FHitResult HitResult;
-	FVector MouseWorldLocation;
-
-	// Ignore the character itself
-	FCollisionQueryParams CollisionParams;
-	CollisionParams.AddIgnoredActor(this);
-
-	// Get the hit result under the cursor
-	if (!PlayerController->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false, HitResult))
-	{
-		return;
-	}
-
-	// Extract the hit location
-	MouseWorldLocation = HitResult.Location;
-
-	// Keep the same Z-coordinate as the character
-	MouseWorldLocation.Z = GetActorLocation().Z;
-
-	FRotator CurrentRotation = GetActorRotation();
-	FRotator TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), MouseWorldLocation);
-
-	// Interpolate rotation with the shortest path across -180/180 boundary
-	FRotator NewRotation = FMath::RInterpTo(CurrentRotation, TargetRotation, DeltaSeconds, RotationSpeed);
-
-	SetActorRotation(NewRotation);
 }
