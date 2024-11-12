@@ -29,6 +29,16 @@ void ULunaCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTick 
 	}
 }
 
+void ULunaCharacterMovementComponent::StartAimDownSights()
+{
+	bRequestToStartAds = true;
+}
+
+void ULunaCharacterMovementComponent::StopAimDownSights()
+{
+	bRequestToStartAds = false;
+}
+
 void ULunaCharacterMovementComponent::InterpolateSpeed(const float TargetSpeed, const float DeltaTime)
 {
 	CurrentSpeed = FMath::FInterpTo(CurrentSpeed, TargetSpeed, DeltaTime, InterpolationSpeed);

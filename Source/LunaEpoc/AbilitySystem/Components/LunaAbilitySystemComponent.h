@@ -13,5 +13,8 @@ UCLASS()
 class LUNAEPOC_API ULunaAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
+
+public:
+	bool bCharacterAbilitiesGiven = false;
 	
 };

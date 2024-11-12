@@ -47,6 +47,10 @@ protected: /*functions*/
 
 	void InitAbilityActorInfo();
 	void RotateToMouse(float DeltaSeconds);
+	// Called from both SetupPlayerInputComponent and OnRep_PlayerState because of a potential race condition where the PlayerController might
+	// call ClientRestart which calls SetupPlayerInputComponent before the PlayerState is repped to the client so the PlayerState would be null in SetupPlayerInputComponent.
+	// Conversely, the PlayerState might be repped before the PlayerController calls ClientRestart so the Actor's InputComponent would be null in OnRep_PlayerState.
+	void BindASCInput();
 
 
 protected: /*properties*/
@@ -58,5 +62,7 @@ protected: /*properties*/
 	/** Camera boom positioning the camera above the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* CameraBoom;
+	
+	bool ASCInputBound = false;
 };
 

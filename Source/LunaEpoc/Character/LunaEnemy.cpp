@@ -52,6 +52,6 @@ void ALunaEnemy::UnHighlightActor()
 
 void ALunaEnemy::BeginPlay()
 {
-	check(AbilitySystemComponent);
+	check(AbilitySystemComponent.IsValid());
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }

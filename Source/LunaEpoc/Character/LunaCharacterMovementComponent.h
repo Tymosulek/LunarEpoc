@@ -25,7 +25,15 @@ public: /*Functions*/
 	virtual void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	// Aim Down Sights
+	UFUNCTION(BlueprintCallable, Category = "Aim Down Sights")
+	void StartAimDownSights();
+	UFUNCTION(BlueprintCallable, Category = "Aim Down Sights")
+	void StopAimDownSights();
+	
 public: /*Properties*/
+
+	uint8 bRequestToStartAds : 1;
 
 protected: /*functions*/
 

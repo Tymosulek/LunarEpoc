@@ -9,6 +9,7 @@
 #include "LunaEpoc/Weapons/AWeapon.h"
 #include "LunaCharacterBase.generated.h"
 
+class ULunaAbilitySystemComponent;
 class UAbilitySystemComponent;
 class UAttributeSet;
 class ULunaCharacterMovementComponent;
@@ -27,15 +28,31 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	// Grant abilities on the Server. The Ability Specs will be replicated to the owning client.
+	virtual void AddCharacterAbilities();
+
+	// Switch on AbilityID to return individual ability levels. Hardcoded to 1 for every ability in this project.
+	UFUNCTION(BlueprintCallable, Category = "Abilities")
+	virtual int32 GetAbilityLevel(EGDAbilityInputID AbilityID) const;
+	
+	// Removes all CharacterAbilities. Can only be called by the Server. Removing on the Server will remove from Client too.
+	virtual void RemoveCharacterAbilities();
+
+protected:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon = nullptr;
 
 	UPROPERTY()
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent = nullptr;
+	TWeakObjectPtr<ULunaAbilitySystemComponent> AbilitySystemComponent = nullptr;
 
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet = nullptr;
+
+	// Default abilities for this Character. These will be removed on Character death and regiven if Character respawns.
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Abilities")
+	TArray<TSubclassOf<class ULunaGameplayAbility>> CharacterAbilities;
+
 
 protected:
 
