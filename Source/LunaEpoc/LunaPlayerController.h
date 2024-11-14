@@ -35,6 +35,7 @@ public: /*Functions*/
 protected: /*functions*/
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
+	virtual void OnPossess(APawn* InPawn) override;
 
 	void Move(const FInputActionValue& Value);
 	void CursorTrace();
