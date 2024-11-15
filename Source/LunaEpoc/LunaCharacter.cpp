@@ -6,6 +6,7 @@
 #include "LunaEpoc/AbilitySystem/Components/LunaAbilitySystemComponent.h"
 #include "Player/LunaPlayerState.h"
 //engine
+#include "LunaEpoc.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/World.h"
@@ -48,16 +49,27 @@ void ALunaCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
-	// Init ability actor info for the Server.
-	InitAbilityActorInfo();
+	if(GetPlayerState<ALunaPlayerState>())
+	{
+		// Init ability actor info for the Server.
+		InitAbilityActorInfo();
+
+		AddCharacterAbilities();
+	}
 }
 
 void ALunaCharacter::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
 
-	// Init ability actor info for the Client.
-	InitAbilityActorInfo();
+	if(GetPlayerState<ALunaPlayerState>())
+	{
+		// Init ability actor info for the Client.
+		InitAbilityActorInfo();
+
+		// Bind player input to the AbilitySystemComponent. Also called in SetupPlayerInputComponent because of a potential race condition.
+		BindASCInput();
+	}
 }
 
 void ALunaCharacter::InitAbilityActorInfo()
@@ -65,7 +77,7 @@ void ALunaCharacter::InitAbilityActorInfo()
 	ALunaPlayerState* LunaPlayerState = GetPlayerState<ALunaPlayerState>();
 	check(LunaPlayerState)
 	LunaPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(LunaPlayerState, this);
-	AbilitySystemComponent = LunaPlayerState->GetAbilitySystemComponent();
+	AbilitySystemComponent = Cast<ULunaAbilitySystemComponent>(LunaPlayerState->GetAbilitySystemComponent());
 	AttributeSet = LunaPlayerState->GetAttributeSet();
 }
 
@@ -107,6 +119,26 @@ void ALunaCharacter::RotateToMouse(float DeltaSeconds)
 	// Convert back to FRotator and apply
 	FRotator NewRotation = NewQuat.Rotator();
 	SetActorRotation(NewRotation);
+}
+
+void ALunaCharacter::BindASCInput()
+{
+	if (!ASCInputBound && AbilitySystemComponent.IsValid() && IsValid(InputComponent))
+	{
+		const FTopLevelAssetPath AbilityEnumAssetPath = FTopLevelAssetPath(FName("/Script/LunaEpoc"), FName("EGDAbilityInputID"));
+		AbilitySystemComponent->BindAbilityActivationToInputComponent(
+			InputComponent,
+			FGameplayAbilityInputBinds(
+				FString("ConfirmTarget"),
+				FString("CancelTarget"),
+				AbilityEnumAssetPath,
+				static_cast<int32>(EGDAbilityInputID::Confirm),
+				static_cast<int32>(EGDAbilityInputID::Cancel)
+			)
+		);
+
+		ASCInputBound = true;
+	}
 }
 
 void ALunaCharacter::BeginPlay()

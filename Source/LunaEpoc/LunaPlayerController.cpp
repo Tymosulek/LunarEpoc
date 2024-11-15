@@ -5,6 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "LunaCharacter.h"
 #include "Engine/LocalPlayer.h"
 #include "Engine/World.h"
 #include "GameFramework/Pawn.h"
@@ -84,6 +85,17 @@ void ALunaPlayerController::SetupInputComponent()
 	else
 	{
 		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input Component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
+	}
+}
+
+void ALunaPlayerController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+	
+	// Make a call to the character's ASC binding setup after Enhanced Input is bound
+	if (ALunaCharacter* LunaCharacter = Cast<ALunaCharacter>(InPawn))
+	{
+		LunaCharacter->BindASCInput();
 	}
 }
 

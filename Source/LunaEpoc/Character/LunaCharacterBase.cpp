@@ -2,7 +2,12 @@
 
 
 #include "LunaCharacterBase.h"
+
+#include "AbilitySystemComponent.h"
+#include "GameplayAbilitySpec.h"
 #include "LunaCharacterMovementComponent.h"
+#include "LunaEpoc/AbilitySystem/Abilities/LunaGameplayAbility.h"
+#include "LunaEpoc/AbilitySystem/Components/LunaAbilitySystemComponent.h"
 
 
 ALunaCharacterBase::ALunaCharacterBase()
@@ -23,7 +28,7 @@ ALunaCharacterBase::ALunaCharacterBase(const FObjectInitializer& ObjectInitializ
 
 UAbilitySystemComponent* ALunaCharacterBase::GetAbilitySystemComponent() const
 {
-	return AbilitySystemComponent;
+	return AbilitySystemComponent.Get();
 }
 
 UAttributeSet* ALunaCharacterBase::GetAttributeSet() const
@@ -53,4 +58,64 @@ void ALunaCharacterBase::BeginPlay()
 			                                 TEXT("WeaponSocket"));
 		}
 	}
+}
+
+void ALunaCharacterBase::AddCharacterAbilities()
+{
+	// Check if the function is running on the server
+	if (GetLocalRole() != ROLE_Authority)
+	{
+		return;
+	}
+
+	// Check if AbilitySystemComponent is valid
+	if (!AbilitySystemComponent.IsValid())
+	{
+		return;
+	}
+
+	// Check if character abilities have already been given
+	if (AbilitySystemComponent->bCharacterAbilitiesGiven)
+	{
+		return;
+	}
+	for (TSubclassOf<ULunaGameplayAbility>& StartupAbility : CharacterAbilities)
+	{
+		AbilitySystemComponent->GiveAbility(
+			FGameplayAbilitySpec(StartupAbility, GetAbilityLevel(StartupAbility.GetDefaultObject()->AbilityID),
+			                     static_cast<int32>(StartupAbility.GetDefaultObject()->AbilityInputID), this));
+	}
+
+	AbilitySystemComponent->bCharacterAbilitiesGiven = true;
+}
+
+int32 ALunaCharacterBase::GetAbilityLevel(EGDAbilityInputID AbilityID) const
+{
+	return 1;
+}
+
+void ALunaCharacterBase::RemoveCharacterAbilities()
+{
+	if (GetLocalRole() != ROLE_Authority || !AbilitySystemComponent.IsValid() || !AbilitySystemComponent->bCharacterAbilitiesGiven)
+	{
+		return;
+	}
+
+	// Remove any abilities added from a previous call. This checks to make sure the ability is in the startup 'CharacterAbilities' array.
+	TArray<FGameplayAbilitySpecHandle> AbilitiesToRemove;
+	for (const FGameplayAbilitySpec& Spec : AbilitySystemComponent->GetActivatableAbilities())
+	{
+		if ((Spec.SourceObject == this) && CharacterAbilities.Contains(Spec.Ability->GetClass()))
+		{
+			AbilitiesToRemove.Add(Spec.Handle);
+		}
+	}
+
+	// Do in two passes so the removal happens after we have the full list
+	for (int32 i = 0; i < AbilitiesToRemove.Num(); i++)
+	{
+		AbilitySystemComponent->ClearAbility(AbilitiesToRemove[i]);
+	}
+
+	AbilitySystemComponent->bCharacterAbilitiesGiven = false;
 }
