@@ -15,7 +15,7 @@ class LUNAEPOC_API ULunaGameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
 
-public:
+public: /*Designer Facing Tunable*/
 
 	// Abilities with this set will automatically activate when the input is pressed
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")
@@ -30,11 +30,23 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Ability")
 	bool ActivateAbilityOnGranted = false;
 
-public:
+	//Apply this gameplay effect if valid while ability active and remove when ability ends.
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Ability")
+	TSubclassOf<UGameplayEffect> EffectClass;
+
+public: /*Functions*/
 	
 	ULunaGameplayAbility();
+
+	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 	
 	// If an ability is marked as 'ActivateAbilityOnGranted', activate them immediately when given here
 	// Epic's comment: Projects may want to initiate passives or do other "BeginPlay" type of logic here.
 	virtual void OnAvatarSet(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) override;
+
+protected: /*functions*/
+protected: /*properties*/
+
+	FActiveGameplayEffectHandle AppliedEffectHandle;
 };
