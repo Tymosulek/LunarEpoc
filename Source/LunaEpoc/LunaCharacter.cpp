@@ -43,6 +43,10 @@ ALunaCharacter::ALunaCharacter()
 	// Activate ticking in order to update the cursor every frame.
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
+
+	//Temporary until inventory system is working.
+	Temp_Weapon = CreateDefaultSubobject<UChildActorComponent>(TEXT("Temp_Weapon"));
+	Temp_Weapon->SetupAttachment(RootComponent);
 }
 
 void ALunaCharacter::PossessedBy(AController* NewController)
@@ -139,6 +143,15 @@ void ALunaCharacter::BindASCInput()
 
 		ASCInputBound = true;
 	}
+}
+
+AWeapon* ALunaCharacter::GetWeapon() const
+{
+	if (Temp_Weapon && Temp_Weapon->GetChildActor())
+	{
+		return Cast<AWeapon>(Temp_Weapon->GetChildActor());
+	}
+	return nullptr;
 }
 
 void ALunaCharacter::BeginPlay()
