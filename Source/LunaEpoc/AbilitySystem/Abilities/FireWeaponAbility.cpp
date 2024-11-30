@@ -2,8 +2,10 @@
 
 
 #include "FireWeaponAbility.h"
-
+//game
 #include "LunaEpoc/LunaCharacter.h"
+//engine
+#include "AbilitySystemComponent.h"
 
 UFireWeaponAbility::UFireWeaponAbility()
 {
@@ -75,4 +77,20 @@ void UFireWeaponAbility::FireWeaponLogic() const
 
     // Draw debug line - placeholder until vfx in place.
     DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 2.0f, 0, 2.0f);
+
+    // Trigger gameplay cue for impact
+    FGameplayCueParameters CueParams;
+    CueParams.Location = End;
+    CueParams.Normal = -ForwardVector;
+    CueParams.EffectCauser = const_cast<ALunaCharacter*>(LunaCharacter);
+    CueParams.PhysicalMaterial = HitResult.PhysMaterial;
+
+    // Trigger the gameplay cue
+    if (UAbilitySystemComponent* Asc = LunaCharacter->GetAbilitySystemComponent())
+    {
+        Asc->ExecuteGameplayCue(
+            FGameplayTag::RequestGameplayTag(FName("GameplayCue.FireWeapon.Impact")),
+            CueParams
+        );
+    }
 }
