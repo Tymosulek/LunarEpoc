@@ -69,6 +69,9 @@ void UFireWeaponAbility::FireWeaponLogic() const
         {
             UE_LOG(LogTemp, Log, TEXT("FireWeaponLogic: Hit Actor: %s"), *HitActor->GetName());
         }
+
+        // Update end so accurate represents impact point in gameplay cue.
+        End = HitResult.ImpactPoint;
     }
     else
     {
