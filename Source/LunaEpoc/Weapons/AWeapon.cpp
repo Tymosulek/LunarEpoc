@@ -6,10 +6,6 @@
 AWeapon::AWeapon()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
-	// Create and attach the weapon mesh component
-	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponMesh"));
-	RootComponent = WeaponMesh;
 }
 
 void AWeapon::Fire()

@@ -22,9 +22,6 @@ public: /*Designer Facing Tunable*/
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon", meta = (AllowPrivateAccess = "true"))
     float Damage = 50.f;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon", meta = (AllowPrivateAccess = "true"))
-    USkeletalMeshComponent* WeaponMesh = nullptr;
-
 public: /*Functions*/
 
 	AWeapon();
