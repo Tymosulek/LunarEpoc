@@ -154,6 +154,13 @@ AWeapon* ALunaCharacter::GetWeapon() const
 	return nullptr;
 }
 
+// ReSharper disable once CppMemberFunctionMayBeStatic
+bool ALunaCharacter::IsAlive() const
+{
+	// to check via attribute system if health remaining.
+	return true;
+}
+
 void ALunaCharacter::BeginPlay()
 {
 	Super::BeginPlay();

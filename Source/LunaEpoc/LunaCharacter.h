@@ -51,6 +51,8 @@ public: /*Functions*/
 	// This is extremely temporary, will replace with a nice inventory component at some point
 	AWeapon* GetWeapon() const;
 
+	bool IsAlive() const;
+
 public: /*Properties*/
 
 protected: /*functions*/

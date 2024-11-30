@@ -22,10 +22,21 @@ public: /*Designer Facing Tunable*/
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon", meta = (AllowPrivateAccess = "true"))
     float Damage = 50.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon", meta = (AllowPrivateAccess = "true"))
+	float RateOfFire = 1.f;
+
 public: /*Functions*/
 
 	AWeapon();
+	
 
-	void Fire();
+	void OnFire();
 	void Reload();
+
+	bool IsInCooldown() const;
+
+protected: /*properties*/
+
+	FTimerHandle CooldownTimerHandle;
+	
 };

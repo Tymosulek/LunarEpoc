@@ -11,17 +11,40 @@ UFireWeaponAbility::UFireWeaponAbility()
 {
 }
 
+bool UFireWeaponAbility::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
+                                            const FGameplayAbilityActorInfo* ActorInfo,
+                                            const FGameplayTagContainer* SourceTags,
+                                            const FGameplayTagContainer* TargetTags,
+                                            FGameplayTagContainer* OptionalRelevantTags) const
+{
+    /* Player must be alive,
+     * have a weapon to fire
+     * not be in cooldown .
+     * Regardless of ammo remaining.*/
+    
+    const ALunaCharacter* LunaCharacter = Cast<ALunaCharacter>(GetAvatarActorFromActorInfo());
+    if (!LunaCharacter || !LunaCharacter->IsAlive())
+    {
+        return false;
+    }
+
+    const AWeapon* Weapon = LunaCharacter->GetWeapon();
+    if (!Weapon || Weapon->IsInCooldown())
+    {
+        return false;
+    }
+
+    return Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags);
+}
+
 void UFireWeaponAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
-                                         const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
+                                         const FGameplayAbilityActorInfo* ActorInfo,
+                                         const FGameplayAbilityActivationInfo ActivationInfo,
                                          const FGameplayEventData* TriggerEventData)
 {
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-
-	const ALunaCharacter* LunaCharacter = Cast<ALunaCharacter>(GetAvatarActorFromActorInfo());
-	if (LunaCharacter && LunaCharacter->GetWeapon())
-	{
-	    FireWeaponLogic();
-	}
+    Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+    
+    FireWeaponLogic();
     
     K2_EndAbility();
 }
@@ -96,4 +119,7 @@ void UFireWeaponAbility::FireWeaponLogic() const
             CueParams
         );
     }
+
+    // Tell weapon we've fired it so can cool down.
+    Weapon->OnFire();
 }

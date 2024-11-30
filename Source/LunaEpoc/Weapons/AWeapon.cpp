@@ -8,22 +8,33 @@ AWeapon::AWeapon()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-void AWeapon::Fire()
+void AWeapon::OnFire()
 {
-    if (AmmoCount > 0)
-    {
-        --AmmoCount;
-        GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, TEXT("Weapon Fired!"));
-    }
-    else
-    {
-        GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, TEXT("Out of Ammo!"));
-    }
+    // Timer should not have been set.
+    check(!CooldownTimerHandle.IsValid());
+
+    GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, TEXT("Weapon begin cooldown"));
+
+    GetWorld()->GetTimerManager().SetTimer(
+        CooldownTimerHandle,
+        [this]()
+        {
+            CooldownTimerHandle.Invalidate();
+            GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, TEXT("Weapon end cooldown"));
+        },
+        RateOfFire,
+        false
+    );
 }
 
 void AWeapon::Reload()
 {
     AmmoCount = MaxAmmo;
     GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, TEXT("Weapon Reloaded!"));
+}
+
+bool AWeapon::IsInCooldown() const
+{
+    return CooldownTimerHandle.IsValid();
 }
 
