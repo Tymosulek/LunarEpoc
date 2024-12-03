@@ -29,11 +29,12 @@ public: /*Functions*/
 
 	AWeapon();
 	
-
 	void OnFire();
 	void Reload();
-
 	bool IsInCooldown() const;
+
+protected: /*functions*/
+	static void LogDebugMessage(const FString& Message);
 
 protected: /*properties*/
 
