@@ -6,6 +6,7 @@
 
 #include "Abilities/GameplayAbilityTargetActor_Trace.h"
 #include "LunaEpoc/AbilitySystem/TargetActor/GameplayAbilityTargetActor_Cone.h"
+#include "LunaEpoc/Player/Components/TargetingComponent.h"
 
 UFocusTargetAbility::UFocusTargetAbility()
 {
@@ -62,10 +63,10 @@ void UFocusTargetAbility::EndAbility(const FGameplayAbilitySpecHandle Handle,
 	GetWorld()->GetTimerManager().ClearTimer(TargetUpdateTimerHandle);
 	TargetUpdateTimerHandle.Invalidate();
 	
-	if (CurrentTarget)
+	if (TargetActor)
 	{
-		//CP - any tidy up before losing last target.
-		CurrentTarget = nullptr;
+		TargetActor->Destroy();
+		TargetActor = nullptr;
 	}
 }
 
@@ -92,58 +93,11 @@ void UFocusTargetAbility::UpdateClosestTarget()
 
 void UFocusTargetAbility::ProcessTargetData(const FGameplayAbilityTargetDataHandle& TargetData)
 {
-	if (!TargetData.IsValid(0))
-	{
-		//CP - Clear last target, no valid data available.
-		CurrentTarget = nullptr;
-		return;
-	}
-
 	const AActor* AbilityOwner = GetAvatarActorFromActorInfo();
 	check(AbilityOwner);
 
-	//CP - Need to find the closest actor to ability owner to set as our current target.
-	AActor* ClosestTarget = nullptr;
-	float ClosestDistanceSquared = MAX_FLT;
-
-	for (const TSharedPtr<FGameplayAbilityTargetData>& Data : TargetData.Data)
+	if (UTargetingComponent* TargetingComponent = AbilityOwner->FindComponentByClass<UTargetingComponent>())
 	{
-		if (!Data.IsValid())
-		{
-			continue;
-		}
-
-		for (TWeakObjectPtr<AActor> DataTargetActor : Data->GetActors())
-		{
-			if (DataTargetActor.IsValid())
-			{
-				//CP - Use DistSquared as more optimal.
-				const float DistanceSquared = FVector::DistSquared(DataTargetActor->GetActorLocation(),
-				                                                   AbilityOwner->GetActorLocation());
-				if (DistanceSquared < ClosestDistanceSquared)
-				{
-					ClosestTarget = DataTargetActor.Get();
-					ClosestDistanceSquared = DistanceSquared;
-				}
-			}
-		}
-	}
-
-	//CP - Update target if new closest found.
-	if (ClosestTarget != CurrentTarget)
-	{
-		CurrentTarget = ClosestTarget;
-
-		if (CurrentTarget)
-		{
-			UE_LOG(LogTemp, Log, TEXT("Current target updated to: %s"), *CurrentTarget->GetName());
-
-			//CP - debug draw until we get some nice vfx.
-			DrawDebugSphere(GetWorld(), CurrentTarget->GetActorLocation(), 50.f, 12, FColor::Green, false, 1.f);
-		}
-		else
-		{
-			UE_LOG(LogTemp, Log, TEXT("Current target cleared."));
-		}
+		TargetingComponent->ProcessTargetData(TargetData, AbilityOwner);
 	}
 }

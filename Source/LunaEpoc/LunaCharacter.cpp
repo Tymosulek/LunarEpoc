@@ -14,6 +14,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Materials/Material.h"
+#include "Player/Components/TargetingComponent.h"
 #include "UObject/ConstructorHelpers.h"
 
 ALunaCharacter::ALunaCharacter()
@@ -47,6 +48,8 @@ ALunaCharacter::ALunaCharacter()
 	//Temporary until inventory system is working.
 	Temp_Weapon = CreateDefaultSubobject<UChildActorComponent>(TEXT("Temp_Weapon"));
 	Temp_Weapon->SetupAttachment(RootComponent);
+	
+	TargetingComponent = CreateDefaultSubobject<UTargetingComponent>(TEXT("TargetingComponent"));
 }
 
 void ALunaCharacter::PossessedBy(AController* NewController)

@@ -9,6 +9,7 @@
 #include "LunaEpoc/Weapons/AWeapon.h"
 #include "LunaCharacterBase.generated.h"
 
+class UTargetingComponent;
 class ULunaAbilitySystemComponent;
 class UAbilitySystemComponent;
 class UAttributeSet;

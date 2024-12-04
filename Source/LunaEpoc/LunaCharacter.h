@@ -37,15 +37,14 @@ public: /*Functions*/
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
-
-	/** Returns TopDownCameraComponent subject **/
+	
 	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
-	/** Returns CameraBoom subject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+	FORCEINLINE class UTargetingComponent* GetTargetingComponent() const { return TargetingComponent; }
 
 	// Called from both SetupPlayerInputComponent and OnRep_PlayerState because of a potential race condition where the PlayerController might
-	// call ClientRestart which calls SetupPlayerInputComponent before the PlayerState is repped to the client so the PlayerState would be null in SetupPlayerInputComponent.
-	// Conversely, the PlayerState might be repped before the PlayerController calls ClientRestart so the Actor's InputComponent would be null in OnRep_PlayerState.
+	// call ClientRestart which calls SetupPlayerInputComponent before the PlayerState is replicated to the client so the PlayerState would be null in SetupPlayerInputComponent.
+	// Conversely, the PlayerState might be replicated before the PlayerController calls ClientRestart so the Actor's InputComponent would be null in OnRep_PlayerState.
 	void BindASCInput();
 
 	// This is extremely temporary, will replace with a nice inventory component at some point
@@ -68,8 +67,12 @@ protected: /*properties*/
 
 	/** Camera boom positioning the camera above the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	USpringArmComponent* CameraBoom;
+	USpringArmComponent* CameraBoom = nullptr;
 	
+	//Used during combat to find the current target.
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Targeting")
+	TObjectPtr<UTargetingComponent> TargetingComponent = nullptr;
+
 	bool ASCInputBound = false;
 };
 

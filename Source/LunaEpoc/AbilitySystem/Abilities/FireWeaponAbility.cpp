@@ -6,6 +6,7 @@
 #include "LunaEpoc/LunaCharacter.h"
 //engine
 #include "AbilitySystemComponent.h"
+#include "LunaEpoc/Player/Components/TargetingComponent.h"
 
 UFireWeaponAbility::UFireWeaponAbility()
 {
@@ -80,13 +81,20 @@ void UFireWeaponAbility::FireWeaponLogic() const
     FVector ForwardVector = Weapon->GetActorForwardVector();
     FVector End = Start + (ForwardVector * 1000.0f);
 
+    //Update end point to be current target if valid.
+    UTargetingComponent* TargetingComponent = LunaCharacter->GetTargetingComponent();
+    if (TargetingComponent && TargetingComponent->GetCurrentTarget())
+    {
+        End = TargetingComponent->GetCurrentTarget()->GetActorLocation();
+    }
+    
     FHitResult HitResult;
     FCollisionQueryParams QueryParams;
     QueryParams.AddIgnoredActor(LunaCharacter); // Ignore the character during the trace
     QueryParams.AddIgnoredActor(Weapon);        // Ignore the weapon itself
 
     // Perform the line trace
-    if (GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, QueryParams))
+    if (GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Pawn, QueryParams))
     {
         if (AActor* HitActor = HitResult.GetActor())
         {
