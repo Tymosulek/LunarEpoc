@@ -25,6 +25,8 @@ public: /*Functions*/
 	UFUNCTION(BlueprintCallable, Category = "Targeting")
 	AActor* GetCurrentTarget() const { return CurrentTarget.Get(); }
 
+	void ClearTarget() { CurrentTarget = nullptr; }
+
 protected: /*properties*/
 
 	TWeakObjectPtr<AActor> CurrentTarget = nullptr;

@@ -53,9 +53,6 @@ protected: /*properties*/
 	FTimerHandle TargetUpdateTimerHandle; 
 	
 	UPROPERTY()
-	TObjectPtr<AActor> CurrentTarget{nullptr}; 
-	
-	UPROPERTY()
 	TObjectPtr<AGameplayAbilityTargetActor_Cone> TargetActor = nullptr;
 
 };

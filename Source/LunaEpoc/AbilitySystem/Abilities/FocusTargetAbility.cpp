@@ -68,6 +68,12 @@ void UFocusTargetAbility::EndAbility(const FGameplayAbilitySpecHandle Handle,
 		TargetActor->Destroy();
 		TargetActor = nullptr;
 	}
+
+	//CP - Clear target when ability ended.
+	if (UTargetingComponent* TargetingComponent = GetAvatarActorFromActorInfo()->FindComponentByClass<UTargetingComponent>())
+	{
+		TargetingComponent->ClearTarget();
+	}
 }
 
 void UFocusTargetAbility::InputReleased(const FGameplayAbilitySpecHandle Handle,

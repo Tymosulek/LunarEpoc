@@ -118,6 +118,7 @@ void UFireWeaponAbility::FireWeaponLogic() const
     CueParams.Normal = -ForwardVector;
     CueParams.EffectCauser = const_cast<ALunaCharacter*>(LunaCharacter);
     CueParams.PhysicalMaterial = HitResult.PhysMaterial;
+    CueParams.SourceObject = Weapon;
 
     // Trigger the gameplay cue
     if (UAbilitySystemComponent* Asc = LunaCharacter->GetAbilitySystemComponent())
