@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{D4FE6AB2-4CD4-46FF-A9A7-F715AFCB3224}" SchemaVersion="119">
 	<Events>
-		<WorkUnit Name="Default Work Unit" ID="{D4FE6AB2-4CD4-46FF-A9A7-F715AFCB3224}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{D4FE6AB2-4CD4-46FF-A9A7-F715AFCB3224}" PersistMode="Standalone">
+			<ChildrenList>
+				<Event Name="AKE_PlayMusicAmbience_Lp" ID="{38A65063-6133-414D-B889-FB9038C7D7E9}">
+					<ChildrenList>
+						<Action Name="" ID="{A5742EC1-8ED1-471B-A240-6D16549B6924}" ShortID="114772130">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="MUSIC_Ambience_95BPM" ID="{D24C9614-9A68-45A2-89E6-AE7D23122E19}" WorkUnitID="{D3C8C602-A00B-4C4F-A17B-EDCF14EF6527}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="AKE_StopMusicAmbience_Lp" ID="{F54E771F-80D1-4DF8-82DB-32FBEEDC19C5}">
+					<ChildrenList>
+						<Action Name="" ID="{AAD43CC1-5B69-46EA-A74F-F63D2E7D2173}" ShortID="926715363">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="MUSIC_Ambience_95BPM" ID="{D24C9614-9A68-45A2-89E6-AE7D23122E19}" WorkUnitID="{D3C8C602-A00B-4C4F-A17B-EDCF14EF6527}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
 	</Events>
 </WwiseDocument>
