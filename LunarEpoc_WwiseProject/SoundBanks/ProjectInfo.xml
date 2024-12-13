@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectInfo>
+	<Project Name="LunarEpoc_WwiseProject" GUID="{A82ACDEA-978C-4FB3-B7DC-4F654A70FC5C}" Generator="2023.1.9.8628"/>
+	<CacheRoot>../.cache</CacheRoot>
+	<Platforms>
+		<Platform Name="Mac" GUID="{2E6591FA-CAF0-4835-8032-F9926B35FFED}" BasePlatform="Mac" BasePlatformGUID="{9C6217D5-DD11-4795-87C1-6CE02853C540}" Path="../GeneratedSoundBanks/Mac"/>
+		<Platform Name="Windows" GUID="{8252CEC3-A396-492F-8B08-C2F10B6FD804}" BasePlatform="Windows" BasePlatformGUID="{6E0CB257-C6C8-4C5C-8366-2740DFC441EB}" Path="../GeneratedSoundBanks/Windows"/>
+	</Platforms>
+	<Languages>
+		<Language Name="English(US)" Id="684519430" GUID="{89692601-226B-4E6C-B1D4-90E88B96F0D2}" Default="true" UseAsStandIn="true"/>
+	</Languages>
+	<FileHash>{E09B27AB-FAA8-4A56-06F7-B497379EE50D}</FileHash>
+</ProjectInfo>
