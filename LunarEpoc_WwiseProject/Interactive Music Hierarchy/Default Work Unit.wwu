@@ -66,7 +66,7 @@
 					<ChildrenList>
 						<MusicSegment Name="MUSIC_Ambience_95BPM_Intro" ID="{7BC4571A-7688-4CFA-93AB-2E3E4ABD81CF}" ShortID="127751710">
 							<PropertyList>
-								<Property Name="EndPosition" Type="Real64" Value="76651.9935622576"/>
+								<Property Name="EndPosition" Type="Real64" Value="40545.5416666667"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -346,17 +346,14 @@
 										</ObjectList>
 									</ObjectLists>
 								</MusicTrack>
-								<MusicTrack Name="MUSIC_Ambience_95BPM_LowSanity_Intro" ID="{011805FE-82F1-4669-B163-77B6545CEA9C}" ShortID="930426762">
+								<MusicTrack Name="MUSIC_Ambience_95BPM_Corruption_Lp" ID="{5F0ADE31-B867-4F7F-B381-F6CCD891778A}" ShortID="989423215">
 									<ReferenceList>
-										<Reference Name="Conversion">
-											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{012D9D34-1708-4A26-9F59-54CBC2B12BED}"/>
-										</Reference>
 										<Reference Name="OutputBus">
 											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{AA2F8CE0-77AD-45BE-A4C9-DF982A3BA22E}"/>
 										</Reference>
 										<Reference Name="TransitionRoot">
 											<Custom>
-												<MusicTransition Name="Root" ID="{B31366D0-BDCD-471A-A659-D561230C7E30}">
+												<MusicTransition Name="Root" ID="{71C73489-F3BA-4DEB-A137-22F155CEC660}">
 													<PropertyList>
 														<Property Name="IsFolder" Type="bool" Value="True"/>
 													</PropertyList>
@@ -366,77 +363,33 @@
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
-										<AudioFileSource Name="MUSIC_Ambience_95BPM_LowSanity_Intro" ID="{5B6C7604-0AB0-44E3-845A-D43DC8B8FF8B}">
+										<AudioFileSource Name="MUSIC_Ambience_95BPM_Corruption_Lp" ID="{B5E826DF-B921-4CB7-9683-19A5789B03C0}">
 											<Language>SFX</Language>
-											<AudioFile>MUSIC_Ambience_95BPM_LowSanity_Intro.wav</AudioFile>
+											<AudioFile>MUSIC_Ambience_95BPM_Corruption_Lp.wav</AudioFile>
 											<MediaIDList>
-												<MediaID ID="1071666453"/>
+												<MediaID ID="640641788"/>
 											</MediaIDList>
 										</AudioFileSource>
 									</ChildrenList>
 									<ObjectLists>
-										<ObjectList Name="RTPC">
-											<Reference>
-												<Local>
-													<RTPC Name="" ID="{3FEB0ECB-C20B-46A3-BCCB-7159A3DDFF0F}" ShortID="126525578">
-														<PropertyList>
-															<Property Name="PropertyName" Type="string" Value="Volume"/>
-														</PropertyList>
-														<ReferenceList>
-															<Reference Name="ControlInput">
-																<ObjectRef Name="AKR_Sanity_Level" ID="{41F2BDDD-691C-48EF-A58E-874D491090A0}" WorkUnitID="{1B81A935-DFAE-4AA6-8AAC-E0A13DFB84A9}"/>
-															</Reference>
-															<Reference Name="Curve">
-																<Custom>
-																	<Curve Name="" ID="{2E5985F7-2087-441E-B3E3-E3BF7E02FF06}">
-																		<PropertyList>
-																			<Property Name="Flags" Type="int32" Value="3"/>
-																		</PropertyList>
-																		<PointList>
-																			<Point>
-																				<XPos>0</XPos>
-																				<YPos>0</YPos>
-																				<Flags>5</Flags>
-																				<SegmentShape>SCurve</SegmentShape>
-																			</Point>
-																			<Point>
-																				<XPos>75</XPos>
-																				<YPos>-200</YPos>
-																				<Flags>0</Flags>
-																			</Point>
-																			<Point>
-																				<XPos>100</XPos>
-																				<YPos>-200</YPos>
-																				<Flags>37</Flags>
-																			</Point>
-																		</PointList>
-																	</Curve>
-																</Custom>
-															</Reference>
-														</ReferenceList>
-													</RTPC>
-												</Local>
-											</Reference>
-										</ObjectList>
 										<ObjectList Name="Sequences">
 											<Reference>
 												<Local>
-													<MusicTrackSequence Name="" ID="{B53EB385-0965-4CE3-8734-29DA1EA45EC6}">
+													<MusicTrackSequence Name="" ID="{6CBC8F6B-893D-48EE-B1AD-656F37E94DD3}">
 														<ObjectLists>
 															<ObjectList Name="Clips">
 																<Reference>
 																	<Local>
-																		<MusicClip Name="MUSIC_Ambience_95BPM_LowSanity_Intro" ID="{3638D721-7B2C-4C1A-BF13-52F893ADEFB5}">
+																		<MusicClip Name="MUSIC_Ambience_95BPM_Corruption_Lp" ID="{41499052-1C04-4117-9F5E-A1BBC96FB76E}">
 																			<PropertyList>
-																				<Property Name="EndTrimOffset" Type="Real64" Value="40421.052631579"/>
-																				<Property Name="FadeInDuration" Type="Real64" Value="7431.98788321614"/>
-																				<Property Name="FadeInShape" Type="int16" Value="6"/>
-																				<Property Name="FadeOutDuration" Type="Real64" Value="13109.2008495618"/>
+																				<Property Name="EndTrimOffset" Type="Real64" Value="40421.0526315791"/>
+																				<Property Name="FadeInMode" Type="int16" Value="0"/>
+																				<Property Name="FadeOutMode" Type="int16" Value="0"/>
 																			</PropertyList>
-																			<AudioSourceRef Name="MUSIC_Ambience_95BPM_LowSanity_Intro" ID="{5B6C7604-0AB0-44E3-845A-D43DC8B8FF8B}"/>
+																			<AudioSourceRef Name="MUSIC_Ambience_95BPM_Corruption_Lp" ID="{B5E826DF-B921-4CB7-9683-19A5789B03C0}"/>
 																			<PropertyCurveList>
 																				<PropertyCurve PropertyName="Highpass">
-																					<Curve Name="" ID="{5C06BF5F-9E35-4C4E-A535-E83D16CDB37A}">
+																					<Curve Name="" ID="{728B433F-19B1-49C6-85CC-3E25AF4668A5}">
 																						<PropertyList>
 																							<Property Name="Flags" Type="int32" Value="1"/>
 																						</PropertyList>
@@ -455,7 +408,7 @@
 																					</Curve>
 																				</PropertyCurve>
 																				<PropertyCurve PropertyName="Lowpass">
-																					<Curve Name="" ID="{C31BFBC1-0014-4736-ABC1-FCF3258FFB7C}">
+																					<Curve Name="" ID="{7D58B2DC-7DE5-43E9-8701-455F02C41311}">
 																						<PropertyList>
 																							<Property Name="Flags" Type="int32" Value="1"/>
 																						</PropertyList>
@@ -474,7 +427,7 @@
 																					</Curve>
 																				</PropertyCurve>
 																				<PropertyCurve PropertyName="Volume">
-																					<Curve Name="" ID="{18019431-70BC-4C41-8210-3BB0D31137A9}">
+																					<Curve Name="" ID="{9DA50DF7-77A7-4E90-A098-D0B3DCBEA908}">
 																						<PropertyList>
 																							<Property Name="Flags" Type="int32" Value="3"/>
 																						</PropertyList>
@@ -483,7 +436,6 @@
 																								<XPos>0</XPos>
 																								<YPos>0</YPos>
 																								<Flags>5</Flags>
-																								<SegmentShape>SCurve</SegmentShape>
 																							</Point>
 																							<Point>
 																								<XPos>40.42105</XPos>
@@ -528,7 +480,7 @@
 						</MusicSegment>
 						<MusicSegment Name="MUSIC_Ambience_95BPM_Lp" ID="{C264A760-F82D-4082-AC13-C5A30D3B0909}" ShortID="756842577">
 							<PropertyList>
-								<Property Name="EndPosition" Type="Real64" Value="50526.3168859649"/>
+								<Property Name="EndPosition" Type="Real64" Value="40421.0625"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Conversion">
@@ -565,6 +517,49 @@
 										</AudioFileSource>
 									</ChildrenList>
 									<ObjectLists>
+										<ObjectList Name="RTPC">
+											<Reference>
+												<Local>
+													<RTPC Name="" ID="{760666E6-67AE-4BF9-ACB6-A5354C921114}" ShortID="175659950">
+														<PropertyList>
+															<Property Name="PropertyName" Type="string" Value="Lowpass"/>
+														</PropertyList>
+														<ReferenceList>
+															<Reference Name="ControlInput">
+																<ObjectRef Name="AKR_Sanity_Level" ID="{41F2BDDD-691C-48EF-A58E-874D491090A0}" WorkUnitID="{1B81A935-DFAE-4AA6-8AAC-E0A13DFB84A9}"/>
+															</Reference>
+															<Reference Name="Curve">
+																<Custom>
+																	<Curve Name="" ID="{FEEAD83B-E856-4520-A935-C0EFFA159E67}">
+																		<PropertyList>
+																			<Property Name="Flags" Type="int32" Value="65537"/>
+																		</PropertyList>
+																		<PointList>
+																			<Point>
+																				<XPos>0</XPos>
+																				<YPos>50</YPos>
+																				<Flags>5</Flags>
+																				<SegmentShape>SCurve</SegmentShape>
+																			</Point>
+																			<Point>
+																				<XPos>50</XPos>
+																				<YPos>-0</YPos>
+																				<Flags>0</Flags>
+																			</Point>
+																			<Point>
+																				<XPos>100</XPos>
+																				<YPos>0</YPos>
+																				<Flags>37</Flags>
+																			</Point>
+																		</PointList>
+																	</Curve>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</RTPC>
+												</Local>
+											</Reference>
+										</ObjectList>
 										<ObjectList Name="Sequences">
 											<Reference>
 												<Local>
@@ -808,17 +803,14 @@
 										</ObjectList>
 									</ObjectLists>
 								</MusicTrack>
-								<MusicTrack Name="MUSIC_Ambience_95BPM_LowSanity_Lp" ID="{E1462A5C-B083-45D9-B5F1-735C508068F0}" ShortID="919298695">
+								<MusicTrack Name="MUSIC_Ambience_95BPM_Corruption_Lp" ID="{FB70BFA6-CEC7-455E-A2B1-D6B4412FF783}" ShortID="1000374120">
 									<ReferenceList>
-										<Reference Name="Conversion">
-											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{012D9D34-1708-4A26-9F59-54CBC2B12BED}"/>
-										</Reference>
 										<Reference Name="OutputBus">
 											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{AA2F8CE0-77AD-45BE-A4C9-DF982A3BA22E}"/>
 										</Reference>
 										<Reference Name="TransitionRoot">
 											<Custom>
-												<MusicTransition Name="Root" ID="{D5C19196-7B26-4ECE-B168-570B3D3527AA}">
+												<MusicTransition Name="Root" ID="{8414C857-3FB8-4245-A15A-EDC7973F88B4}">
 													<PropertyList>
 														<Property Name="IsFolder" Type="bool" Value="True"/>
 													</PropertyList>
@@ -828,11 +820,11 @@
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
-										<AudioFileSource Name="MUSIC_Ambience_95BPM_LowSanity_Lp" ID="{EAE3A572-066C-4C56-B9CC-38AD09F8157C}">
+										<AudioFileSource Name="MUSIC_Ambience_95BPM_Corruption_Lp" ID="{ECBCB6BB-7322-4BB1-A091-62FCC4FF3616}">
 											<Language>SFX</Language>
-											<AudioFile>MUSIC_Ambience_95BPM_LowSanity_Lp.wav</AudioFile>
+											<AudioFile>MUSIC_Ambience_95BPM_Corruption_Lp.wav</AudioFile>
 											<MediaIDList>
-												<MediaID ID="607943785"/>
+												<MediaID ID="640641788"/>
 											</MediaIDList>
 										</AudioFileSource>
 									</ChildrenList>
@@ -840,7 +832,7 @@
 										<ObjectList Name="RTPC">
 											<Reference>
 												<Local>
-													<RTPC Name="" ID="{439E7E5E-C4E7-455E-8B66-572ECCDE135D}" ShortID="27333694">
+													<RTPC Name="" ID="{5F7941E8-B075-4E0B-89A1-820D99EA7A0B}" ShortID="991736567">
 														<PropertyList>
 															<Property Name="PropertyName" Type="string" Value="Volume"/>
 														</PropertyList>
@@ -850,14 +842,14 @@
 															</Reference>
 															<Reference Name="Curve">
 																<Custom>
-																	<Curve Name="" ID="{9AF008B8-3BB7-434E-9EC3-DC692DE45A85}">
+																	<Curve Name="" ID="{02994D6B-D240-4078-B5A3-BA9247ABA6B3}">
 																		<PropertyList>
 																			<Property Name="Flags" Type="int32" Value="3"/>
 																		</PropertyList>
 																		<PointList>
 																			<Point>
 																				<XPos>0</XPos>
-																				<YPos>0</YPos>
+																				<YPos>6</YPos>
 																				<Flags>5</Flags>
 																				<SegmentShape>SCurve</SegmentShape>
 																			</Point>
@@ -883,33 +875,34 @@
 										<ObjectList Name="Sequences">
 											<Reference>
 												<Local>
-													<MusicTrackSequence Name="" ID="{2E1C33E7-440E-4A82-BEAF-2788135844EC}">
+													<MusicTrackSequence Name="" ID="{2CCC9A9F-000F-42CD-BA0F-1485B4452208}">
 														<ObjectLists>
 															<ObjectList Name="Clips">
 																<Reference>
 																	<Local>
-																		<MusicClip Name="MUSIC_Ambience_95BPM_LowSanity_Lp" ID="{31BFDD83-6248-4DE1-A04F-BF1C22A879E0}">
+																		<MusicClip Name="MUSIC_Ambience_95BPM_Corruption_Lp" ID="{F02B2446-4503-44F2-BB1D-5E84EE779898}">
 																			<PropertyList>
-																				<Property Name="EndTrimOffset" Type="Real64" Value="40421.0526315789"/>
-																				<Property Name="FadeInDuration" Type="Real64" Value="7645.02255198176"/>
-																				<Property Name="FadeOutDuration" Type="Real64" Value="7722.24500200177"/>
-																				<Property Name="FadeOutShape" Type="int16" Value="6"/>
+																				<Property Name="BeginTrimOffset" Type="Real64" Value="40421.0526315789"/>
+																				<Property Name="EndTrimOffset" Type="Real64" Value="80842.105263158"/>
+																				<Property Name="FadeInMode" Type="int16" Value="0"/>
+																				<Property Name="FadeOutMode" Type="int16" Value="0"/>
+																				<Property Name="PlayAt" Type="Real64" Value="-40421.0526315789"/>
 																			</PropertyList>
-																			<AudioSourceRef Name="MUSIC_Ambience_95BPM_LowSanity_Lp" ID="{EAE3A572-066C-4C56-B9CC-38AD09F8157C}"/>
+																			<AudioSourceRef Name="MUSIC_Ambience_95BPM_Corruption_Lp" ID="{ECBCB6BB-7322-4BB1-A091-62FCC4FF3616}"/>
 																			<PropertyCurveList>
 																				<PropertyCurve PropertyName="Highpass">
-																					<Curve Name="" ID="{2754C7D7-B38F-401F-8F4B-74C616606CBC}">
+																					<Curve Name="" ID="{D2C0D6BE-D9F2-4F59-A389-2E11E9B557A5}">
 																						<PropertyList>
 																							<Property Name="Flags" Type="int32" Value="1"/>
 																						</PropertyList>
 																						<PointList>
 																							<Point>
-																								<XPos>0</XPos>
+																								<XPos>40.42105</XPos>
 																								<YPos>0</YPos>
 																								<Flags>5</Flags>
 																							</Point>
 																							<Point>
-																								<XPos>40.42105</XPos>
+																								<XPos>80.84211</XPos>
 																								<YPos>0</YPos>
 																								<Flags>37</Flags>
 																							</Point>
@@ -917,18 +910,18 @@
 																					</Curve>
 																				</PropertyCurve>
 																				<PropertyCurve PropertyName="Lowpass">
-																					<Curve Name="" ID="{00AA0099-E8A3-4EBC-9778-A4C122BD2C66}">
+																					<Curve Name="" ID="{5F6695DD-5CC8-4496-8929-DADD4EFA91CA}">
 																						<PropertyList>
 																							<Property Name="Flags" Type="int32" Value="1"/>
 																						</PropertyList>
 																						<PointList>
 																							<Point>
-																								<XPos>0</XPos>
+																								<XPos>40.42105</XPos>
 																								<YPos>0</YPos>
 																								<Flags>5</Flags>
 																							</Point>
 																							<Point>
-																								<XPos>40.42105</XPos>
+																								<XPos>80.84211</XPos>
 																								<YPos>0</YPos>
 																								<Flags>37</Flags>
 																							</Point>
@@ -936,19 +929,18 @@
 																					</Curve>
 																				</PropertyCurve>
 																				<PropertyCurve PropertyName="Volume">
-																					<Curve Name="" ID="{36598BCA-0A4B-42A1-A2CE-ABA83CBD9AC2}">
+																					<Curve Name="" ID="{86F8E2E7-DF21-4604-A653-F65A4B332DD8}">
 																						<PropertyList>
 																							<Property Name="Flags" Type="int32" Value="3"/>
 																						</PropertyList>
 																						<PointList>
 																							<Point>
-																								<XPos>0</XPos>
+																								<XPos>40.42105</XPos>
 																								<YPos>0</YPos>
 																								<Flags>5</Flags>
-																								<SegmentShape>SCurve</SegmentShape>
 																							</Point>
 																							<Point>
-																								<XPos>40.42105</XPos>
+																								<XPos>80.84211</XPos>
 																								<YPos>0</YPos>
 																								<Flags>37</Flags>
 																							</Point>
