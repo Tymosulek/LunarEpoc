@@ -70,6 +70,10 @@ Saved/*
 Intermediate/*
 Plugins/*/Intermediate/*
 
+# Don't ignore Wwise .dll and .lib files as these are needed for compiling
+!Plugins/Wwise/*.dll
+!Plugins/Wwise/*.lib
+
 # Cache files for the editor to use
 DerivedDataCache/*
 LunaEpoc.uproject.DotSettings.user
