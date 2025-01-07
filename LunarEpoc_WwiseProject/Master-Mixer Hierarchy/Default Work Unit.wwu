@@ -10,23 +10,32 @@
 						</Reference>
 					</ReferenceList>
 					<ChildrenList>
-						<AuxBus Name="AKR_Bass_Verb" ID="{63C87990-0792-420A-9900-B731EA20DC74}">
-							<ObjectLists>
-								<ObjectList Name="Effects">
-									<Reference>
-										<Local>
-											<EffectSlot Name="" ID="{CFA26A8A-7323-4E99-A9B2-3CDA1AAADDE6}" ShortID="145549626">
-												<ReferenceList>
-													<Reference Name="Effect" PluginName="Wwise RoomVerb" CompanyID="0" PluginID="118" PluginType="3">
-														<ObjectRef Name="Bass_Verb" ID="{236A5A5F-2C97-4FEE-B645-DB4E222BF45E}" WorkUnitID="{114E504C-E6F8-4218-92FB-029278739B4E}"/>
-													</Reference>
-												</ReferenceList>
-											</EffectSlot>
-										</Local>
-									</Reference>
-								</ObjectList>
-							</ObjectLists>
-						</AuxBus>
+						<Bus Name="AKB_Music" ID="{6CC7A021-21A2-4412-AD33-C630653C4AC5}">
+							<PropertyList>
+								<Property Name="Color" Type="int16" Value="14"/>
+							</PropertyList>
+							<ChildrenList>
+								<AuxBus Name="AKR_Bass_Verb" ID="{63C87990-0792-420A-9900-B731EA20DC74}">
+									<ObjectLists>
+										<ObjectList Name="Effects">
+											<Reference>
+												<Local>
+													<EffectSlot Name="" ID="{CFA26A8A-7323-4E99-A9B2-3CDA1AAADDE6}" ShortID="145549626">
+														<ReferenceList>
+															<Reference Name="Effect" PluginName="Wwise RoomVerb" CompanyID="0" PluginID="118" PluginType="3">
+																<ObjectRef Name="Bass_Verb" ID="{236A5A5F-2C97-4FEE-B645-DB4E222BF45E}" WorkUnitID="{114E504C-E6F8-4218-92FB-029278739B4E}"/>
+															</Reference>
+														</ReferenceList>
+													</EffectSlot>
+												</Local>
+											</Reference>
+										</ObjectList>
+									</ObjectLists>
+								</AuxBus>
+							</ChildrenList>
+						</Bus>
+						<Bus Name="AKB_UI" ID="{92387057-CE61-4F80-A64A-56F9BAB0C15D}"/>
+						<Bus Name="AKB_Ambience" ID="{716AAE77-07BD-4A4F-90DE-B0EA31D7B10C}"/>
 					</ChildrenList>
 				</Bus>
 			</ChildrenList>

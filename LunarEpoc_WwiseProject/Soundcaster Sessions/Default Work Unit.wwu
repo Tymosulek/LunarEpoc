@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{6CDB76D3-D738-45E7-BF2C-3EA9A48C1FD1}" SchemaVersion="119">
 	<SoundcasterSessions>
-		<WorkUnit Name="Default Work Unit" ID="{6CDB76D3-D738-45E7-BF2C-3EA9A48C1FD1}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{6CDB76D3-D738-45E7-BF2C-3EA9A48C1FD1}" PersistMode="Standalone">
+			<ChildrenList>
+				<SoundcasterSession Name="UI" ID="{15FECA0F-19C5-4791-9777-D787A567C079}">
+					<ModuleList>
+						<Module>
+							<ObjectRef Name="AKE_AKE_PlayUI_InventoryBack" ID="{F523D5CC-1A6D-45C5-AD3C-232C0CC055D4}" WorkUnitID="{D4FE6AB2-4CD4-46FF-A9A7-F715AFCB3224}"/>
+							<Position X="0" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="AKE_AKE_PlayUI_ItemUse" ID="{42E1C1E5-EB6C-4B0E-B68F-1638B0F1B1A5}" WorkUnitID="{D4FE6AB2-4CD4-46FF-A9A7-F715AFCB3224}"/>
+							<Position X="0" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="AKE_AKE_PlayUI_InventoryClose" ID="{7EE61A41-E657-40B8-8C43-F421B058BEE2}" WorkUnitID="{D4FE6AB2-4CD4-46FF-A9A7-F715AFCB3224}"/>
+							<Position X="1" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="AKE_AKE_PlayUI_InventoryOpen" ID="{D5DED637-9C9B-4C03-98DF-8E547CC02AF7}" WorkUnitID="{D4FE6AB2-4CD4-46FF-A9A7-F715AFCB3224}"/>
+							<Position X="1" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="AKE_AKE_PlayUI_InventoryMoveCursor" ID="{C9DBAE67-D183-4340-B676-BC0CC979C124}" WorkUnitID="{D4FE6AB2-4CD4-46FF-A9A7-F715AFCB3224}"/>
+							<Position X="2" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="AKE_AKE_PlayUI_InventorySelect" ID="{66EE6EA2-0333-4165-BD4A-A5000D3C58B9}" WorkUnitID="{D4FE6AB2-4CD4-46FF-A9A7-F715AFCB3224}"/>
+							<Position X="2" Y="1"/>
+						</Module>
+					</ModuleList>
+					<RTPCValueList ShowAll="true"/>
+					<CurrentStateList ShowAll="true"/>
+					<CurrentSwitchList ShowAll="true"/>
+				</SoundcasterSession>
+				<SoundcasterSession Name="Ambience" ID="{3DA4ED22-F557-49C3-B80A-8FBAE527D73B}">
+					<ModuleList>
+						<Module>
+							<ObjectRef Name="MUSIC_Ambience_80BPM" ID="{D24C9614-9A68-45A2-89E6-AE7D23122E19}" WorkUnitID="{D3C8C602-A00B-4C4F-A17B-EDCF14EF6527}"/>
+							<Position X="0" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="AKE_PlayAmbience" ID="{038F93C2-4FEC-41C8-9DBE-6DA782D18524}" WorkUnitID="{D4FE6AB2-4CD4-46FF-A9A7-F715AFCB3224}"/>
+							<Position X="1" Y="0"/>
+						</Module>
+					</ModuleList>
+					<RTPCValueList ShowAll="true">
+						<RTPCValue>
+							<GameParameterRef Name="AKR_Desync_TimeRemaining" ID="{A81774EB-5388-4526-B538-FA0E084AE96A}"/>
+							<Value>0</Value>
+						</RTPCValue>
+						<RTPCValue>
+							<GameParameterRef Name="AKR_Sanity_Level" ID="{41F2BDDD-691C-48EF-A58E-874D491090A0}"/>
+							<Value>100</Value>
+						</RTPCValue>
+					</RTPCValueList>
+					<CurrentStateList ShowAll="true"/>
+					<CurrentSwitchList ShowAll="true"/>
+				</SoundcasterSession>
+			</ChildrenList>
+		</WorkUnit>
 	</SoundcasterSessions>
 </WwiseDocument>
