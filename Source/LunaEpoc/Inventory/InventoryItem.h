@@ -26,8 +26,8 @@ enum class EItemQuality : uint8
 	Legendary
 };
 
-USTRUCT(BlueprintType)
-struct FInventoryItem
+UCLASS(Blueprintable)
+class LUNAEPOC_API UInventoryItem : public UObject
 {
 	GENERATED_BODY()
 
@@ -82,10 +82,4 @@ struct FInventoryItem
 	//
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
 	// EEquipmentSlot EquipmentSlot;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
-	int32 Damage;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
-	int32 Armour;
 };
