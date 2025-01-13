@@ -13,6 +13,7 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName) 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAttributeChanged, float, NewValue, float, OldValue);
 
 UCLASS()
 class LUNAEPOC_API ULunaAttributeSet : public UAttributeSet
@@ -39,6 +40,9 @@ public:
 	UFUNCTION()
 	void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth);
 
+	UPROPERTY(BlueprintAssignable, Category = "Delegates")
+	FOnAttributeChanged OnHealthChanged;
+	
 	// ----------------------------------------------------------------
 
 	//Stamina
@@ -55,6 +59,9 @@ public:
 
 	UFUNCTION()
 	void OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina);
+
+	UPROPERTY(BlueprintAssignable, Category = "Delegates")
+	FOnAttributeChanged OnStaminaChanged;
 
 	// ----------------------------------------------------------------
 	

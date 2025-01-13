@@ -73,6 +73,9 @@ protected: /*properties*/
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Targeting")
 	TObjectPtr<UTargetingComponent> TargetingComponent = nullptr;
 
+	UPROPERTY()
+	TObjectPtr<class UAIPerceptionStimuliSourceComponent> StimuliSource = nullptr;
+
 	bool ASCInputBound = false;
 };
 

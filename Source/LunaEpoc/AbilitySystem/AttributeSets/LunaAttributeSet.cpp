@@ -15,6 +15,10 @@ ULunaAttributeSet::ULunaAttributeSet()
 
 void ULunaAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth)
 {
+	float NewHealth = Health.GetCurrentValue();
+
+	OnHealthChanged.Broadcast(NewHealth, OldHealth.GetCurrentValue());
+	
 	GAMEPLAYATTRIBUTE_REPNOTIFY(ULunaAttributeSet, Health, OldHealth);
 }
 
@@ -25,6 +29,10 @@ void ULunaAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHeal
 
 void ULunaAttributeSet::OnRep_Stamina(const FGameplayAttributeData& OldStamina)
 {
+	float NewStamina = Stamina.GetCurrentValue();
+
+	OnStaminaChanged.Broadcast(NewStamina, OldStamina.GetCurrentValue());
+	
 	GAMEPLAYATTRIBUTE_REPNOTIFY(ULunaAttributeSet, Stamina, OldStamina);
 }
 
