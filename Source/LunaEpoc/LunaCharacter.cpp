@@ -14,6 +14,9 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Materials/Material.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/AISense_Hearing.h"
+#include "Perception/AISense_Sight.h"
 #include "Player/Components/TargetingComponent.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -50,6 +53,8 @@ ALunaCharacter::ALunaCharacter()
 	Temp_Weapon->SetupAttachment(RootComponent);
 	
 	TargetingComponent = CreateDefaultSubobject<UTargetingComponent>(TEXT("TargetingComponent"));
+	//AIStimulusSource
+	StimuliSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("StimuliSource"));
 }
 
 void ALunaCharacter::PossessedBy(AController* NewController)
@@ -167,6 +172,9 @@ bool ALunaCharacter::IsAlive() const
 void ALunaCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	StimuliSource->RegisterForSense(UAISense_Sight::StaticClass());
+	StimuliSource->RegisterForSense(UAISense_Hearing::StaticClass());
 }
 
 void ALunaCharacter::Tick(float DeltaSeconds)

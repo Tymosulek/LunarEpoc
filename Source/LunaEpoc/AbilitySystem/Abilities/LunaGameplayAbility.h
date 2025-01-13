@@ -48,5 +48,7 @@ public: /*Functions*/
 protected: /*functions*/
 protected: /*properties*/
 
+	FGameplayTag DamageTag = FGameplayTag::RequestGameplayTag(FName("Abilities.Damage")); 
+
 	FActiveGameplayEffectHandle AppliedEffectHandle;
 };
