@@ -16,7 +16,18 @@ public: /*Designer Facing Tunable*/
 
 public: /*Functions*/	
 	UInventoryComponent();
+	virtual ~UInventoryComponent() override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	UInventoryItem* GetInventoryItem(int32 Index) const;
+	void SetInventoryItem(int32 Index, UInventoryItem* InventoryItem);
+	void ClearInventoryItem(int32 Index);
+	int32 GetEmptyInventoryIndex() const;
+	int32 GetInventoryCount() const;
+	void IncreaseInventorySize(int32 Amount);
+	void DecreaseInventorySize(int32 Amount);
+	
+	TArray<UInventoryItem*> GetInventoryItems() const {return Inventory;}
 
 public: /*Properties*/
 
@@ -25,5 +36,5 @@ protected: /*functions*/
 
 protected: /*properties*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
-	TArray<FInventoryItem> Inventory;
+	TArray<UInventoryItem*> Inventory;
 };
