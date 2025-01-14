@@ -54,7 +54,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Abilities")
 	TArray<TSubclassOf<class ULunaGameplayAbility>> CharacterAbilities;
 
-
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon", meta = (AllowPrivateAccess = "true"))

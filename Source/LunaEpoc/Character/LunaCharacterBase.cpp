@@ -10,6 +10,7 @@
 //engine
 #include "AbilitySystemComponent.h"
 #include "GameplayAbilitySpec.h"
+#include "Components/SphereComponent.h"
 
 
 ALunaCharacterBase::ALunaCharacterBase()

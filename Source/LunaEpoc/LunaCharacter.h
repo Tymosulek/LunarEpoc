@@ -10,6 +10,8 @@
 
 #include "LunaCharacter.generated.h"
 
+class USphereComponent;
+
 UCLASS(Blueprintable)
 class ALunaCharacter : public ALunaCharacterBase
 {
@@ -54,7 +56,10 @@ public: /*Functions*/
 
 public: /*Properties*/
 
-protected: /*functions*/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Interaction")
+	USphereComponent* InteractionCollider;
+
+public: /*Functions*/
 
 	void InitAbilityActorInfo();
 	void RotateToMouse(float DeltaSeconds);

@@ -9,6 +9,7 @@
 #include "LunaEpoc.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SphereComponent.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -55,6 +56,13 @@ ALunaCharacter::ALunaCharacter()
 	TargetingComponent = CreateDefaultSubobject<UTargetingComponent>(TEXT("TargetingComponent"));
 	//AIStimulusSource
 	StimuliSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("StimuliSource"));
+
+	InteractionCollider = CreateDefaultSubobject<USphereComponent>(TEXT("InteractionCollider"));
+	InteractionCollider->SetupAttachment(RootComponent); // Attach to the player's root component
+	InteractionCollider->SetSphereRadius(300.f);         // Set the interaction range
+	InteractionCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	InteractionCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
+	InteractionCollider->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
 }
 
 void ALunaCharacter::PossessedBy(AController* NewController)
