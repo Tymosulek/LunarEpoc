@@ -1,0 +1,29 @@
+{
+ "ProjectInfo": {
+  "Project": {
+   "Name": "LunarEpoc_Wwise",
+   "GUID": "{10D6BE99-AAAB-4F45-BECA-C53D611ACC3E}",
+   "Generator": "2023.1.9.8628"
+  },
+  "CacheRoot": "../.cache",
+  "Platforms": [
+   {
+    "Name": "Windows",
+    "GUID": "{DD7FD548-AE82-4709-A02D-264C03229A05}",
+    "BasePlatform": "Windows",
+    "BasePlatformGUID": "{6E0CB257-C6C8-4C5C-8366-2740DFC441EB}",
+    "Path": "Windows"
+   }
+  ],
+  "Languages": [
+   {
+    "Name": "English(US)",
+    "Id": "684519430",
+    "GUID": "{4ACEC368-6C11-49FA-8768-2FA6B86D91E6}",
+    "Default": "true",
+    "UseAsStandIn": "true"
+   }
+  ],
+  "FileHash": "{75658BA4-3C56-68B1-2A9B-F9AA94252675}"
+ }
+}
