@@ -28,6 +28,9 @@ public: /*Designer Facing*/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UInputAction* MoveAction{nullptr};
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UInputAction* InventoryAction{nullptr};
+
 public: /*Functions*/
 	ALunaPlayerController();
 	virtual void PlayerTick(float DeltaTime) override;

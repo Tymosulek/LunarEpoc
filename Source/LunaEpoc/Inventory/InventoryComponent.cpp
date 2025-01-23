@@ -3,6 +3,9 @@
 
 #include "InventoryComponent.h"
 
+#include "LunaEpoc/UI/HUD/LunaHUD.h"
+#include "LunaEpoc/UI/Inventory/InventoryGrid.h"
+
 UInventoryComponent::UInventoryComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -15,6 +18,33 @@ UInventoryComponent::~UInventoryComponent()
 void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	InventoryItems.SetNum(InventorySize);
+
+	if (UInventoryGrid* InventoryGrid = GetInventoryGrid())
+	{
+		InventoryGrid->RefreshInventory(this);
+	}
+}
+
+UInventoryGrid* UInventoryComponent::GetInventoryGrid() const
+{
+	const APawn* OwnerPawn = Cast<APawn>(GetOwner());
+	if (!OwnerPawn)
+	{
+		return nullptr;
+	}
+	
+	const ALunaHUD* HUD = OwnerPawn->GetController<APlayerController>() 
+							  ? OwnerPawn->GetController<APlayerController>()->GetHUD<ALunaHUD>() 
+							  : nullptr;
+
+	if (!HUD)
+	{
+		return nullptr;
+	}
+	
+	return HUD->GetInventoryGrid();
 }
 
 void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -24,30 +54,30 @@ void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 
 UInventoryItem* UInventoryComponent::GetInventoryItem(const int32 Index) const
 {
-	return Inventory.IsValidIndex(Index) ? Inventory[Index] : nullptr;
+	return InventoryItems.IsValidIndex(Index) ? InventoryItems[Index] : nullptr;
 }
 
 void UInventoryComponent::SetInventoryItem(const int32 Index, UInventoryItem* InventoryItem)
 {
-	if (Inventory.IsValidIndex(Index) && InventoryItem)
+	if (InventoryItems.IsValidIndex(Index) && InventoryItem)
 	{
-		Inventory[Index] = InventoryItem;
+		InventoryItems[Index] = InventoryItem;
 	}
 }
 
 void UInventoryComponent::ClearInventoryItem(const int32 Index)
 {
-	if (Inventory.IsValidIndex(Index))
+	if (InventoryItems.IsValidIndex(Index))
 	{
-		Inventory[Index] = nullptr;
+		InventoryItems[Index] = nullptr;
 	}
 }
 
 int32 UInventoryComponent::GetEmptyInventoryIndex() const
 {
-	for (int32 i = 0; i < Inventory.Num(); i++)
+	for (int32 i = 0; i < InventoryItems.Num(); i++)
 	{
-		if (!Inventory[i]) 
+		if (!InventoryItems[i]) 
 		{
 			return i;
 		}
@@ -59,7 +89,7 @@ int32 UInventoryComponent::GetEmptyInventoryIndex() const
 int32 UInventoryComponent::GetInventoryCount() const
 {
 	int32 Count = 0;
-	for (const UInventoryItem* Item : Inventory)
+	for (const UInventoryItem* Item : InventoryItems)
 	{
 		if (Item)
 		{
@@ -73,14 +103,14 @@ void UInventoryComponent::IncreaseInventorySize(const int32 Amount)
 {
 	for (int32 i = 0; i < Amount; i++)
 	{
-		Inventory.Add(nullptr);
+		InventoryItems.Add(nullptr);
 	}
 }
 
 void UInventoryComponent::DecreaseInventorySize(const int32 Amount)
 {
-	for (int32 i = 0; i < Amount && Inventory.Num() > 0; i++)
+	for (int32 i = 0; i < Amount && InventoryItems.Num() > 0; i++)
 	{
-		Inventory.Pop();
+		InventoryItems.Pop();
 	}
 }

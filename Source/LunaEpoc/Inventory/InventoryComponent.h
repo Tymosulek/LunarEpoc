@@ -7,6 +7,8 @@
 #include "Components/ActorComponent.h"
 #include "InventoryComponent.generated.h"
 
+class UInventoryGrid;
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class LUNAEPOC_API UInventoryComponent : public UActorComponent
 {
@@ -27,14 +29,22 @@ public: /*Functions*/
 	void IncreaseInventorySize(int32 Amount);
 	void DecreaseInventorySize(int32 Amount);
 	
-	TArray<UInventoryItem*> GetInventoryItems() const {return Inventory;}
+	TArray<UInventoryItem*> GetInventoryItems() const {return InventoryItems;}
 
 public: /*Properties*/
 
 protected: /*functions*/
 	virtual void BeginPlay() override;
+ 
+	UInventoryGrid* GetInventoryGrid() const;
 
 protected: /*properties*/
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
-	TArray<UInventoryItem*> Inventory;
+	TArray<UInventoryItem*> InventoryItems;
+
+	int32 CurrentInventoryIndex;
+	int32 MaxAmountPerItem = 30;
+	int32 InventorySize = 64;
+	int32 newItemAmount = 0;
 };

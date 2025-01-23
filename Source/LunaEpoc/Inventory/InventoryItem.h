@@ -32,17 +32,18 @@ class LUNAEPOC_API UInventoryItem : public UObject
 	GENERATED_BODY()
 
 	public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
-	FName ID;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
+	bool bShouldAddToInventory;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
 	UTexture2D* Icon = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
-	FName Name;
+	FText Name;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
-	FString Description;
+	FText Description;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
 	EItemQuality Quality;
@@ -76,10 +77,4 @@ class LUNAEPOC_API UInventoryItem : public UObject
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
 	USkeletalMesh* EquipmentMesh = nullptr;
-
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
-	// EEquipmentType EquipmentType;
-	//
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
-	// EEquipmentSlot EquipmentSlot;
 };

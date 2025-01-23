@@ -10,7 +10,7 @@
 
 #include "LunaCharacter.generated.h"
 
-class USphereComponent;
+class UInventoryComponent;
 
 UCLASS(Blueprintable)
 class ALunaCharacter : public ALunaCharacterBase
@@ -42,7 +42,7 @@ public: /*Functions*/
 	
 	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	FORCEINLINE class UTargetingComponent* GetTargetingComponent() const { return TargetingComponent; }
+	FORCEINLINE UTargetingComponent* GetTargetingComponent() const { return TargetingComponent; }
 
 	// Called from both SetupPlayerInputComponent and OnRep_PlayerState because of a potential race condition where the PlayerController might
 	// call ClientRestart which calls SetupPlayerInputComponent before the PlayerState is replicated to the client so the PlayerState would be null in SetupPlayerInputComponent.
@@ -57,7 +57,7 @@ public: /*Functions*/
 public: /*Properties*/
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Interaction")
-	USphereComponent* InteractionCollider;
+	class USphereComponent* InteractionCollider;
 
 public: /*Functions*/
 
@@ -81,6 +81,9 @@ protected: /*properties*/
 	UPROPERTY()
 	TObjectPtr<class UAIPerceptionStimuliSourceComponent> StimuliSource = nullptr;
 
+	UPROPERTY()
+	TObjectPtr<UInventoryComponent> InventoryComponent = nullptr;
+	
 	bool ASCInputBound = false;
 };
 

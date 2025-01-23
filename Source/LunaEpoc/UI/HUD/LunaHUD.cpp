@@ -3,13 +3,12 @@
 
 #include "LunaHUD.h"
 
-#include "../Widget/LunaUserWidget.h"
-#include "../WidgetController/OverlayWidgetController.h"
-#include "Subsystems/PanelExtensionSubsystem.h"
-#include "GameFramework/PlayerController.h"
-#include "GameFramework/PlayerState.h"
-#include "AbilitySystemComponent.h"
-#include "AttributeSet.h"
+//engine
+#include "GameFramework/PlayerController.h"\
+//game
+#include "LunaEpoc/UI/Inventory/InventoryGrid.h"
+#include "LunaEpoc/UI/Widget/LunaUserWidget.h"
+#include "LunaEpoc/UI/WidgetController/OverlayWidgetController.h"
 
 
 UOverlayWidgetController* ALunaHUD::GetOverlayWidgetController(const FWidgetControllerParams& WCParams)
@@ -44,5 +43,80 @@ void ALunaHUD::InitOverlay(APlayerController* Pc, APlayerState* Ps, UAbilitySyst
 
 		//add to player screen.
 		OverlayWidget->AddToViewport();
+
+		//Setup inventory widget.
+		InitInventoryWidget(Pc, WidgetController);
+	}
+}
+
+void ALunaHUD::InitInventoryWidget(APlayerController* PC, UOverlayWidgetController* WidgetController)
+{
+	if (!InventoryWidgetClass) 
+	{
+		UE_LOG(LogTemp, Warning, TEXT("InventoryWidgetClass is uninitialized. Please set it in the Blueprint."));
+		return;
+	}
+
+	if (!InventoryWidget && GetWorld()) 
+	{
+		InventoryWidget = CreateWidget<UInventoryGrid>(GetWorld(), InventoryWidgetClass);
+
+		if (InventoryWidget)
+		{
+			InventoryWidget->AddToViewport();
+			InventoryWidget->SetVisibility(ESlateVisibility::Hidden); // Start hidden
+			InventoryWidget->SetWidgetController(WidgetController);
+		}
+	}
+}
+
+void ALunaHUD::ConfigureInputMode(APlayerController* PlayerController, const bool bUIOnly) const
+{
+	if (!PlayerController)
+		return;
+
+	PlayerController->SetShowMouseCursor(bUIOnly);
+
+	if (bUIOnly)
+	{
+		// Set input mode to UI only and focus the inventory widget
+		FInputModeUIOnly InputMode;
+		InputMode.SetWidgetToFocus(InventoryWidget->TakeWidget());
+		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		PlayerController->SetInputMode(InputMode);
+	}
+	else
+	{
+		// Revert to game-only input mode
+		FInputModeGameOnly InputMode;
+		PlayerController->SetInputMode(InputMode);
+	}
+}
+
+// ReSharper disable once CppMemberFunctionMayBeConst
+void ALunaHUD::ToggleInventoryWidget()
+{
+	// Validate InventoryWidget and PlayerController
+	if (!InventoryWidget || !GetOwningPlayerController())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ToggleInventoryWidget failed: InventoryWidget or PlayerController is null."));
+		return;
+	}
+
+	APlayerController* PlayerController = GetOwningPlayerController();
+
+	if (!InventoryWidget->IsInViewport())
+	{
+		// Show the widget and configure input for UI
+		InventoryWidget->AddToViewport();
+		ConfigureInputMode(PlayerController, true);
+		UE_LOG(LogTemp, Log, TEXT("Inventory widget displayed."));
+	}
+	else
+	{
+		// Hide the widget and restore gameplay input
+		InventoryWidget->RemoveFromParent();
+		ConfigureInputMode(PlayerController, false);
+		UE_LOG(LogTemp, Log, TEXT("Inventory widget hidden."));
 	}
 }

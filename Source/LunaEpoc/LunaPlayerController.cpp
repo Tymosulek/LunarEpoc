@@ -10,6 +10,7 @@
 #include "Engine/World.h"
 #include "GameFramework/Pawn.h"
 #include "Interaction/EnemyInterface.h"
+#include "UI/HUD/LunaHUD.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -81,6 +82,12 @@ void ALunaPlayerController::SetupInputComponent()
 	{
 		//Movement
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ALunaPlayerController::Move);
+
+		//Inventory
+		if (ALunaHUD* LunaHUD = GetHUD<ALunaHUD>())
+		{
+			EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Triggered, LunaHUD, &ALunaHUD::ToggleInventoryWidget);
+		}
 	}
 	else
 	{

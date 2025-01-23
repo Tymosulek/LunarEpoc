@@ -6,6 +6,7 @@
 #include "GameFramework/HUD.h"
 #include "LunaHUD.generated.h"
 
+class UInventoryGrid;
 class ULunaUserWidget;
 class APlayerController;
 class APlayerState;
@@ -29,8 +30,15 @@ public:
 
 	void InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* Asc, UAttributeSet* As);
 
+	UInventoryGrid* GetInventoryGrid() const {return InventoryWidget;}
+
+	UFUNCTION()
+	void ToggleInventoryWidget();
+
 protected: /*functions*/
 
+	void InitInventoryWidget(APlayerController* PC, UOverlayWidgetController* WidgetController);
+	void ConfigureInputMode(APlayerController* PlayerController, bool bUIOnly) const;
 
 protected: /*properties*/
 
@@ -43,5 +51,9 @@ protected: /*properties*/
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UOverlayWidgetController> OverlayWidgetControllerClass;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TSubclassOf<UInventoryGrid> InventoryWidgetClass;
 	
+	UPROPERTY()
+	TObjectPtr<UInventoryGrid> InventoryWidget;
 };
