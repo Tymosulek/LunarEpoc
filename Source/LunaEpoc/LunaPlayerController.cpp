@@ -82,12 +82,6 @@ void ALunaPlayerController::SetupInputComponent()
 	{
 		//Movement
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ALunaPlayerController::Move);
-
-		//Inventory
-		if (ALunaHUD* LunaHUD = GetHUD<ALunaHUD>())
-		{
-			EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Triggered, LunaHUD, &ALunaHUD::ToggleInventoryWidget);
-		}
 	}
 	else
 	{

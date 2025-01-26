@@ -43,9 +43,6 @@ void ALunaHUD::InitOverlay(APlayerController* Pc, APlayerState* Ps, UAbilitySyst
 
 		//add to player screen.
 		OverlayWidget->AddToViewport();
-
-		//Setup inventory widget.
-		InitInventoryWidget(Pc, WidgetController);
 	}
 }
 
@@ -64,7 +61,7 @@ void ALunaHUD::InitInventoryWidget(APlayerController* PC, UOverlayWidgetControll
 		if (InventoryWidget)
 		{
 			InventoryWidget->AddToViewport();
-			InventoryWidget->SetVisibility(ESlateVisibility::Hidden); // Start hidden
+			InventoryWidget->SetVisibility(ESlateVisibility::Visible);
 			InventoryWidget->SetWidgetController(WidgetController);
 		}
 	}

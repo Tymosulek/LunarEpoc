@@ -7,6 +7,7 @@
 #include "Player/LunaPlayerState.h"
 //engine
 #include "LunaEpoc.h"
+#include "LunaPlayerController.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
@@ -20,6 +21,7 @@
 #include "Perception/AISense_Hearing.h"
 #include "Perception/AISense_Sight.h"
 #include "Player/Components/TargetingComponent.h"
+#include "UI/HUD/LunaHUD.h"
 #include "UObject/ConstructorHelpers.h"
 
 ALunaCharacter::ALunaCharacter()
@@ -190,6 +192,15 @@ void ALunaCharacter::BeginPlay()
 
 	StimuliSource->RegisterForSense(UAISense_Sight::StaticClass());
 	StimuliSource->RegisterForSense(UAISense_Hearing::StaticClass());
+
+	//Setup HUD overlay.
+	if (ALunaPlayerController* PlayerController = Cast<ALunaPlayerController>(GetController()))
+	{
+		if (ALunaHUD* HUD = Cast<ALunaHUD>(PlayerController->GetHUD()))
+		{
+			HUD->InitOverlay(PlayerController, GetPlayerState(), GetAbilitySystemComponent(), GetAttributeSet());
+		}
+	}
 }
 
 void ALunaCharacter::Tick(float DeltaSeconds)
